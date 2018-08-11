@@ -3,6 +3,8 @@ package com.yuanzhy.tools.sql.classify.impl;
 import com.yuanzhy.tools.sql.classify.BaseClassifier;
 import com.yuanzhy.tools.sql.classify.IClassifier;
 import com.yuanzhy.tools.sql.model.SqlLog;
+import com.yuanzhy.tools.sql.util.StorageUtil;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.regex.Pattern;
 
@@ -18,7 +20,9 @@ public class StructureClassifier extends BaseClassifier implements IClassifier {
 
     @Override
     protected String getClassifyKey(SqlLog sqlLog) {
-        return PARAM_PATTERN.matcher(sqlLog.getSql()).replaceAll("?");
+        String sqlStructure = PARAM_PATTERN.matcher(sqlLog.getSql()).replaceAll("?");
+        // 为了减少缓存中的大量字符串，将sqlKey转换为MD5
+        return DigestUtils.md5Hex(sqlStructure);
     }
 
     public static void main(String[] a) {

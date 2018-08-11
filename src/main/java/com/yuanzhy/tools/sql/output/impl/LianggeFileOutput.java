@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @Author Administrator
+ * @Author yuanzhy
  * @Date 2018/8/8
  */
 public class LianggeFileOutput extends BaseFileOutput {

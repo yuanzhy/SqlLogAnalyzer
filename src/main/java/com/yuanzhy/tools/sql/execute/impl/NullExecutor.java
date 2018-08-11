@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * @Author Administrator
+ * @Author yuanzhy
  * @Date 2018/8/8
  */
 public class NullExecutor implements IExecutor {

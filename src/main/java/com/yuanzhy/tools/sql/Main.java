@@ -9,6 +9,7 @@ import com.yuanzhy.tools.sql.input.InputFactory;
 import com.yuanzhy.tools.sql.model.SqlLog;
 import com.yuanzhy.tools.sql.output.IOutput;
 import com.yuanzhy.tools.sql.output.OutputFactory;
+import com.yuanzhy.tools.sql.util.ArgumentUtil;
 import com.yuanzhy.tools.sql.util.ConfigUtil;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -33,6 +34,7 @@ public class Main {
     public static void main(String[] args) {
 //        args = new String[]{"2018-06-07"}; // test
         String path = getPath(args);
+        ArgumentUtil.setArgument("path", path);
         // 读取数据源，抽象，持有文件流引用方式
         IInput input = InputFactory.newInstance(path);
         // SQL分组, 为提升处理性能，暂实现为分组后每组只取一条存储在内存中（否则全部存储太大，需要落地到文件了）

@@ -26,7 +26,7 @@ public class ConfigUtil {
     private static Properties props = new Properties();
 
     static {
-        // 先从评级目录找config.properties
+        // 先从平级目录找config.properties
         InputStream in = null;
         try {
             File configFile = new File(getJarPath().concat("/config.properties"));

@@ -1,5 +1,6 @@
 package com.yuanzhy.tools.sql.model;
 
+import com.yuanzhy.tools.sql.util.StorageUtil;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -126,7 +127,11 @@ public class SqlLog {
      * @return sql 实际执行的sql
      */
     public String getSql() {
-        return this.sql;
+        if (this.sqlFilename == null) {
+            return this.sql;
+        } else {
+            return StorageUtil.get(sqlFilename);
+        }
     }
 
     /**
@@ -135,7 +140,11 @@ public class SqlLog {
      * @param sql 实际执行的sql
      */
     public void setSql(String sql) {
-        this.sql = sql;
+        if (this.sqlFilename == null) {
+            this.sql = sql;
+        } else {
+            throw new RuntimeException("sql已缓存在磁盘中，不可以赋值");
+        }
     }
 
     /**
@@ -226,5 +235,15 @@ public class SqlLog {
      */
     public void setTime(String time) {
         this.time = time;
+    }
+
+    private String sqlFilename;
+    /**
+     *  为了防止内存溢出，将大SQL做一下MD5存储到文件缓存目录中
+     *  执行和输出的时候在读出来
+     */
+    public void storeSql() {
+        this.sqlFilename = StorageUtil.store(this.sql);
+        this.sql = null;
     }
 }

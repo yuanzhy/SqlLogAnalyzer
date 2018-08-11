@@ -37,6 +37,7 @@ public abstract class BaseClassifier implements IClassifier {
                 existsLog.setTotalCount(existsLog.getTotalCount()+1);
                 continue;
             }
+            sqlLog.storeSql();
             tmpMap.put(classifyKey, sqlLog);
             result.add(sqlLog);
         }
