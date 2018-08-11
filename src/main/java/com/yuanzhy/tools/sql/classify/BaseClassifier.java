@@ -2,13 +2,19 @@ package com.yuanzhy.tools.sql.classify;
 
 import com.yuanzhy.tools.sql.input.IInput;
 import com.yuanzhy.tools.sql.model.SqlLog;
+import com.yuanzhy.tools.sql.util.JvmUtil;
 import com.yuanzhy.tools.sql.util.SqlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
+import java.lang.management.MemoryUsage;
+import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +29,7 @@ public abstract class BaseClassifier implements IClassifier {
     @Override
     public List<SqlLog> doClassify(IInput input) {
         Map<String, SqlLog> tmpMap = new HashMap<String, SqlLog>();
-        List<SqlLog> result = new ArrayList<SqlLog>();
+        List<SqlLog> result = new LinkedList<SqlLog>();
         Iterator<SqlLog> ite = input.iterator();
         while (ite.hasNext()) {
             SqlLog sqlLog = ite.next();
@@ -37,9 +43,11 @@ public abstract class BaseClassifier implements IClassifier {
                 existsLog.setTotalCount(existsLog.getTotalCount()+1);
                 continue;
             }
-            sqlLog.storeSql();
             tmpMap.put(classifyKey, sqlLog);
             result.add(sqlLog);
+            if (JvmUtil.heapUsedHalf()) {
+                sqlLog.storeSql();
+            }
         }
         return result;
     }

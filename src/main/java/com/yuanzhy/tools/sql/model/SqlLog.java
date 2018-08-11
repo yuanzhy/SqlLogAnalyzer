@@ -48,7 +48,10 @@ public class SqlLog {
      * time
      */
     private String time;
-
+    /**
+     * sql转储文件名
+     */
+    private String sqlFilename;
     /**
      * 获取 类名
      *
@@ -237,7 +240,6 @@ public class SqlLog {
         this.time = time;
     }
 
-    private String sqlFilename;
     /**
      *  为了防止内存溢出，将大SQL做一下MD5存储到文件缓存目录中
      *  执行和输出的时候在读出来

@@ -11,6 +11,7 @@ import com.yuanzhy.tools.sql.output.IOutput;
 import com.yuanzhy.tools.sql.output.OutputFactory;
 import com.yuanzhy.tools.sql.util.ArgumentUtil;
 import com.yuanzhy.tools.sql.util.ConfigUtil;
+import com.yuanzhy.tools.sql.util.JvmUtil;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -35,6 +36,7 @@ public class Main {
 //        args = new String[]{"2018-06-07"}; // test
         String path = getPath(args);
         ArgumentUtil.setArgument("path", path);
+//        JvmUtil.heapUsedHalf();
         // 读取数据源，抽象，持有文件流引用方式
         IInput input = InputFactory.newInstance(path);
         // SQL分组, 为提升处理性能，暂实现为分组后每组只取一条存储在内存中（否则全部存储太大，需要落地到文件了）
