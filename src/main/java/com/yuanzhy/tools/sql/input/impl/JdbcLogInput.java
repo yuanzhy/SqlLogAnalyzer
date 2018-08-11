@@ -82,6 +82,7 @@ public class JdbcLogInput extends BaseFolderInput implements IInput {
                 String threadId = StringUtils.substringAfter(sqlStr, "] [");
                 threadId = StringUtils.substringBefore(threadId,"]");
                 nextLog.setThreadId(threadId);
+                nextLog.setTime(StringUtils.substringBefore(sqlStr, " ["));
                 // 正则性能较差，此处没用
                 String logContent = StringUtils.substringAfter(sqlStr, "jdbc.sqltiming -").trim();
                 if (logContent.contains("java:")) {
