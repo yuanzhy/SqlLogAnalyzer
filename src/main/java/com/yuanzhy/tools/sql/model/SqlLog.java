@@ -28,10 +28,6 @@ public class SqlLog {
      */
     private int logCost;
     /**
-     * 日志中循环次数（同一线程中的执行次数）
-     */
-    private int cyclicCount = 1;
-    /**
      * 日志中该类SQL执行的总次数
      */
     private int totalCount = 1;
@@ -176,24 +172,6 @@ public class SqlLog {
      */
     public void setSuccess(boolean success) {
         this.success = success;
-    }
-
-    /**
-     * 获取 日志中循环次数（同一线程中的执行次数）
-     *
-     * @return cyclicCount 日志中循环次数（同一线程中的执行次数）
-     */
-    public int getCyclicCount() {
-        return this.cyclicCount;
-    }
-
-    /**
-     * 设置 日志中循环次数（同一线程中的执行次数）
-     *
-     * @param cyclicCount 日志中循环次数（同一线程中的执行次数）
-     */
-    public void setCyclicCount(int cyclicCount) {
-        this.cyclicCount = cyclicCount;
     }
 
     /**

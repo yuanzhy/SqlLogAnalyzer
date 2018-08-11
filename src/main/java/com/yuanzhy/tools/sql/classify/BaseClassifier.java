@@ -30,15 +30,14 @@ public abstract class BaseClassifier implements IClassifier {
             if (!SqlUtil.isSelectSql(sqlLog.getSql())) {
                 continue;
             }
-            String classifierKey = this.getClassifyKey(sqlLog);
-            if (tmpMap.containsKey(classifierKey)) {
+            String classifyKey = this.getClassifyKey(sqlLog);
+            if (tmpMap.containsKey(classifyKey)) {
                 // 已经包含同类sql，计个数
-                SqlLog existsLog = tmpMap.get(classifierKey);
+                SqlLog existsLog = tmpMap.get(classifyKey);
                 existsLog.setTotalCount(existsLog.getTotalCount()+1);
-
                 continue;
             }
-            tmpMap.put(classifierKey, sqlLog);
+            tmpMap.put(classifyKey, sqlLog);
             result.add(sqlLog);
         }
         return result;
