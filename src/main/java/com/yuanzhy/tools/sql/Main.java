@@ -22,14 +22,17 @@ import java.util.List;
 
 /**
  * 为了兼容低版本环境，使用JDK6开发
+ *
  * @author yuanzhy
  * @date 2018/6/13
  */
 public class Main {
 
     private static Logger log = LoggerFactory.getLogger(Main.class);
+
     /**
      * 日志路径不传默认为jar包所在路径
+     *
      * @param args ["logPath"]，相对于jar所在目录的路径
      */
     public static void main(String[] args) {
@@ -53,30 +56,28 @@ public class Main {
     }
 
     /**
-     *
-     * @param  args args
+     * @param args args
      * @return
      */
     static String getPath(String[] args) {
         String jarPath = ConfigUtil.getJarPath();
         if (ArrayUtils.isEmpty(args)) {
             return jarPath;
-        } else {
-            String param = args[0];
-            if (param.startsWith("/")) {
-                return param;
-            } else if (param.startsWith("./")) {
-                return jarPath + param.substring(1);
-            } else if (param.startsWith("../")) {
-                int count = StringUtils.countMatches(param, "../");
-                File path = new File(jarPath);
-                for (int i=0; i<count; i++) {
-                    path = path.getParentFile();
-                }
-                return path.getAbsolutePath();
-            } else {
-                return jarPath + "/" + args[0];
+        }
+        String param = args[0];
+        if (param.startsWith("/")) {
+            return param;
+        } else if (param.startsWith("./")) {
+            return jarPath + param.substring(1);
+        } else if (param.startsWith("../")) {
+            int count = StringUtils.countMatches(param, "../");
+            File path = new File(jarPath);
+            for (int i = 0; i < count; i++) {
+                path = path.getParentFile();
             }
+            return path.getAbsolutePath();
+        } else {
+            return jarPath + "/" + args[0];
         }
     }
 }

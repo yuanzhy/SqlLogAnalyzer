@@ -5,9 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * @author yuanzhy
@@ -16,24 +15,24 @@ import java.util.concurrent.TimeUnit;
 public final class JvmUtil {
 
     private static Logger log = LoggerFactory.getLogger(JvmUtil.class);
-    private static ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
     private static MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
+    private static long halfMaxHeapMemory = memoryMXBean.getHeapMemoryUsage().getMax() / 2;
 
     static {
-        Runnable task = new Runnable() {
+        log.info("jvm堆内存：{}M", memoryMXBean.getHeapMemoryUsage().getMax()/1024/1024);
+        final Timer timer = new Timer(true);
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                long max = memoryMXBean.getHeapMemoryUsage().getMax();
                 long used = memoryMXBean.getHeapMemoryUsage().getUsed();
-                if (max / used < 2) {
+                if (used >= halfMaxHeapMemory) {
                     log.warn("jvm内存使用已超过一半");
                     heapUsedHalf = true;
-                    pool.shutdownNow();
+                    timer.cancel();
+                    memoryMXBean = null;
                 }
             }
-        };
-        pool.scheduleAtFixedRate(task, 1, 1, TimeUnit.SECONDS);
-        log.info("jvm堆内存：{}M", memoryMXBean.getHeapMemoryUsage().getMax()/1024/1024);
+        }, 0, 100);
     }
 
     /**
