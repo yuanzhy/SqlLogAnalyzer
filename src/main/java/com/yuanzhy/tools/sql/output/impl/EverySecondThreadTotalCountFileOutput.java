@@ -13,7 +13,7 @@ import java.util.List;
  * @Author yuanzhy
  * @Date 2018/8/8
  */
-public class LianggeFileOutput extends BaseFileOutput {
+public class EverySecondThreadTotalCountFileOutput extends BaseFileOutput {
 
     protected static final String LIANGGE_TEMPLATE = "{order}.\r\n" +
             "{time} [{threadId}] {className}.{methodName}({classNameAfter}.java:{lineNumber})\r\n" +
