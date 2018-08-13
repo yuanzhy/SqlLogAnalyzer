@@ -11,7 +11,7 @@ import com.yuanzhy.tools.sql.output.IOutput;
 import com.yuanzhy.tools.sql.output.OutputFactory;
 import com.yuanzhy.tools.sql.util.ArgumentUtil;
 import com.yuanzhy.tools.sql.util.ConfigUtil;
-import com.yuanzhy.tools.sql.util.JvmUtil;
+import com.yuanzhy.tools.sql.util.StorageUtil;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -53,6 +53,8 @@ public class Main {
         // 按SQL执行时间倒叙排列下，出一个简易报告，输出到文件
         IOutput output = OutputFactory.newInstance();
         output.doOutput(sqlLogs);
+
+        StorageUtil.clearTemp();
     }
 
     /**

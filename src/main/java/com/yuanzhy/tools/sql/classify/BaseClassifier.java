@@ -2,6 +2,7 @@ package com.yuanzhy.tools.sql.classify;
 
 import com.yuanzhy.tools.sql.input.IInput;
 import com.yuanzhy.tools.sql.model.SqlLog;
+import com.yuanzhy.tools.sql.util.ConfigUtil;
 import com.yuanzhy.tools.sql.util.JvmUtil;
 import com.yuanzhy.tools.sql.util.SqlUtil;
 import org.slf4j.Logger;
@@ -20,6 +21,8 @@ import java.util.Map;
 public abstract class BaseClassifier implements IClassifier {
 
     protected Logger log = LoggerFactory.getLogger(this.getClass());
+
+    protected static final boolean ENABLE_DISK_CACHE = Boolean.parseBoolean(ConfigUtil.getProperty("tools.impl.enableDiskCache"));
 
     @Override
     public List<SqlLog> doClassify(IInput input) {
@@ -40,7 +43,7 @@ public abstract class BaseClassifier implements IClassifier {
             }
             tmpMap.put(classifyKey, sqlLog);
             result.add(sqlLog);
-            if (JvmUtil.heapUsedHalf()) {
+            if (ENABLE_DISK_CACHE && JvmUtil.heapUsedHalf()) {
                 sqlLog.storeSql();
             }
         }

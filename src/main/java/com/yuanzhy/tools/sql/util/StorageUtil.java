@@ -37,7 +37,7 @@ public final class StorageUtil {
      */
     public static String store(String source) {
         String filename = DigestUtils.md5Hex(source);
-        File file = new File(STORE_PATH, filename);
+        File file = new File(getSubFolder(filename), filename);
         if (file.exists()) {
             return filename;
         }
@@ -55,7 +55,7 @@ public final class StorageUtil {
      * @return
      */
     public static String get(String filename) {
-        File file = new File(STORE_PATH, filename);
+        File file = new File(getSubFolder(filename), filename);
         if (file.exists()) {
             try {
                 return FileUtils.readFileToString(file, "UTF-8");
@@ -67,4 +67,18 @@ public final class StorageUtil {
         }
     }
 
+    private static String getSubFolder(String filename) {
+        return STORE_PATH + "/" + filename.substring(0, 2);
+    }
+
+    /**
+     *
+     */
+    public static void clearTemp() {
+        try {
+            FileUtils.deleteDirectory(new File(STORE_PATH));
+        } catch (IOException e) {
+            throw new RuntimeException("删除临时目录失败", e);
+        }
+    }
 }

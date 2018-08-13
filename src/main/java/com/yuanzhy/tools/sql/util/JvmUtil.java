@@ -9,9 +9,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
+ * 监控超过一半的情况不可靠。。大部分情况对象是可回收的。
+ *
  * @author yuanzhy
  * @date 2018/8/12
  */
+@Deprecated
 public final class JvmUtil {
 
     private static Logger log = LoggerFactory.getLogger(JvmUtil.class);

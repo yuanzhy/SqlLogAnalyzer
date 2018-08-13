@@ -21,8 +21,7 @@ public class SqlTimingFileOutput extends BaseFileOutput implements IOutput {
     }
 
     @Override
-    protected void prepare(List<SqlLog> sqlLogs) {
-        super.prepare(sqlLogs);
+    protected void sort(List<SqlLog> sqlLogs) {
         log.info("============执行时间倒叙排序");
         Collections.sort(sqlLogs, new SqlTimingComparator());
     }

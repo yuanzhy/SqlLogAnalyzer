@@ -12,7 +12,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -36,9 +35,7 @@ public abstract class BaseFileOutput implements IOutput {
 //            "sql file cost {logCost} msec\r\n" +
             "sql file count {totalCount}\r\n\r\n";
 
-    protected void prepare(List<SqlLog> sqlLogs) {
-
-    }
+    protected abstract void sort(List<SqlLog> sqlLogs);
 
     /**
      * sqlLog对象转换为字符串形式
@@ -72,7 +69,8 @@ public abstract class BaseFileOutput implements IOutput {
 
     @Override
     public void doOutput(List<SqlLog> sqlLogs) {
-        this.prepare(sqlLogs);
+        this.sort(sqlLogs);
+        List<SqlLog> outputList = this.getOutputList(sqlLogs);
         log.info("============结果输出到文件");
         String filename;
         if (fileIndex == 1) {
@@ -89,7 +87,7 @@ public abstract class BaseFileOutput implements IOutput {
             file.createNewFile();
             writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8"));
             int i = 1;
-            for (SqlLog sqlLog : sqlLogs) {
+            for (SqlLog sqlLog : outputList) {
                 // 只记录执行成功了sql
                 if (sqlLog.isSuccess()) {
                     String logString = this.convert(sqlLog, i++);
@@ -122,16 +120,22 @@ public abstract class BaseFileOutput implements IOutput {
     }
 
     /**
-     * SQL执行时间倒叙排列比较器
+     * 获取需要输出的结果集
+     * @param sqlLogs sqlLogs
+     * @return
      */
-    public class TotalCountComparator implements Comparator<SqlLog> {
-
-        @Override
-        public int compare(SqlLog o1, SqlLog o2) {
-            if (o1.getTotalCount() == o2.getTotalCount()) {
-                return 0;
-            }
-            return (o1.getTotalCount() > o2.getTotalCount()) ? -1 : 1;
+    private List<SqlLog> getOutputList(List<SqlLog> sqlLogs) {
+        String topString = ConfigUtil.getProperty("tools.impl.output.top");
+        int top;
+        try {
+            top = Integer.parseInt(topString);
+        } catch (NumberFormatException e) {
+            top = 0;
+        }
+        if (top == 0 || top >= sqlLogs.size()) {
+            return sqlLogs;
+        } else {
+            return sqlLogs.subList(0, top);
         }
     }
 }
