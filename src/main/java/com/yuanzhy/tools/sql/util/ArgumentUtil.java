@@ -1,5 +1,9 @@
 package com.yuanzhy.tools.sql.util;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
+
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,15 +21,47 @@ public final class ArgumentUtil {
         return argsMap.get(key);
     }
 
-    public static void setArgument(String key, String value) {
-        argsMap.put(key, value);
-    }
-
-    public static String[] getArgs() {
-        return args;
-    }
-
-    public static void setArgs(String[] args) {
+    public static void parseArgs(String[] args) {
+        if (ArrayUtils.isEmpty(args)) {
+            argsMap.put("path", getPath(null));
+            return;
+        }
         ArgumentUtil.args = args;
+        argsMap.put("path", args[0]); // 兼容之前的直接传递path
+        for (String arg : args) {
+            if (arg.startsWith("--") && arg.contains("=")) {
+                String key = arg.substring(2, arg.indexOf("="));
+                String value = arg.substring(arg.indexOf("=") + 1);
+                if ("path".equals(key)) {
+                    value = getPath(value);
+                }
+                argsMap.put(key, value);
+            }
+        }
+    }
+
+    /**
+     * @param param param
+     * @return
+     */
+    private static String getPath(String param) {
+        String jarPath = ConfigUtil.getJarPath();
+        if (param == null || param.startsWith("--")) {
+            return jarPath;
+        }
+        if (param.startsWith("/")) {
+            return param;
+        } else if (param.startsWith("./")) {
+            return jarPath + param.substring(1);
+        } else if (param.startsWith("../")) {
+            int count = StringUtils.countMatches(param, "../");
+            File path = new File(jarPath);
+            for (int i = 0; i < count; i++) {
+                path = path.getParentFile();
+            }
+            return path.getAbsolutePath();
+        } else {
+            return jarPath + "/" + param;
+        }
     }
 }
