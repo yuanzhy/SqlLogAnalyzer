@@ -21,7 +21,7 @@ import java.util.List;
 public abstract class BaseFileOutput implements IOutput {
 
     protected static Logger log = LoggerFactory.getLogger(TotalCountFileOutput.class);
-
+    /** 单文件不可超过此大小 */
     protected static final long MAX_FILE_SIZE = 160 * 1024 * 1024;
 
     protected static final String TEMPLATE_FULL = "{order}.  cost {cost} msec\r\n" +
@@ -39,8 +39,9 @@ public abstract class BaseFileOutput implements IOutput {
 
     /**
      * sqlLog对象转换为字符串形式
+     *
      * @param sqlLog sqlLog
-     * @param index 当前sqlLog所在的索引值
+     * @param index  当前sqlLog所在的索引值
      * @return
      */
     protected String convert(SqlLog sqlLog, int index) {
@@ -63,21 +64,15 @@ public abstract class BaseFileOutput implements IOutput {
         }
     }
 
-    protected abstract String getResultFilename(String suffix);
-
-    protected int fileIndex = 1;
+    protected abstract String getResultFilename();
 
     @Override
     public void doOutput(List<SqlLog> sqlLogs) {
         this.sort(sqlLogs);
         List<SqlLog> outputList = this.getOutputList(sqlLogs);
         log.info("============结果输出到文件");
-        String filename;
-        if (fileIndex == 1) {
-            filename = this.getResultFilename("");
-        } else {
-            filename = this.getResultFilename("(" + fileIndex++ + ")");
-        }
+        String filename = this.getResultFilename();
+        int fileIndex = 1;
         File file = new File(ConfigUtil.getJarPath().concat(filename));
         if (file.exists()) {
             file.delete();
@@ -94,13 +89,16 @@ public abstract class BaseFileOutput implements IOutput {
                     log.debug("prepare output sql: {}", logString);
                     writer.write(logString);
                     if (file.length() >= MAX_FILE_SIZE) {
-                        filename = this.getResultFilename("(" + fileIndex++ + ")");
+                        IOUtils.closeQuietly(writer);
+                        if (fileIndex == 1) { // 第一个文件重命名为(1)结尾的情况
+                            file.renameTo(new File(filename.replace(".txt", "(1).txt")));
+                        }
+                        filename = filename.replace(".txt", "(" + ++fileIndex + ").txt");
                         file = new File(ConfigUtil.getJarPath().concat(filename));
                         if (file.exists()) {
                             file.delete();
                         }
                         file.createNewFile();
-                        IOUtils.closeQuietly(writer);
                         writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8"));
                     }
                 }
@@ -121,6 +119,7 @@ public abstract class BaseFileOutput implements IOutput {
 
     /**
      * 获取需要输出的结果集
+     *
      * @param sqlLogs sqlLogs
      * @return
      */
@@ -130,8 +129,10 @@ public abstract class BaseFileOutput implements IOutput {
         try {
             top = Integer.parseInt(topString);
         } catch (NumberFormatException e) {
+            log.warn("tools.impl.output.top配置错误，当做0处理");
             top = 0;
         }
+        log.info("output top is {}", top);
         if (top == 0 || top >= sqlLogs.size()) {
             return sqlLogs;
         } else {

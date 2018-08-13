@@ -16,11 +16,11 @@ public class SameSecondThreadTotalCountFileOutput extends TotalCountFileOutput i
     protected static final String SST_TEMPLATE = "{order}.\r\n" +
             "{time} [{threadId}] {className}.{methodName}({classNameAfter}.java:{lineNumber})\r\n" +
             "{sql}\r\n" +
-            "- every second sql count {totalCount}\r\n\r\n";
+            "- same second thread sql count {totalCount}\r\n\r\n";
 
     @Override
-    protected String getResultFilename(String suffix) {
-        return "/result/sameSecondThreadDesc_" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date()) + suffix + ".txt";
+    protected String getResultFilename() {
+        return "/result/sameSecondThreadDesc_" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date()) + ".txt";
     }
 
     @Override

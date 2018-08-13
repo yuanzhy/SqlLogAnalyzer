@@ -17,8 +17,8 @@ import java.util.List;
 public class TotalCountFileOutput extends BaseFileOutput implements IOutput {
 
     @Override
-    protected String getResultFilename(String suffix) {
-        return "/result/countDesc_" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date()) + suffix + ".txt";
+    protected String getResultFilename() {
+        return "/result/countDesc_" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date()) + ".txt";
     }
 
     @Override

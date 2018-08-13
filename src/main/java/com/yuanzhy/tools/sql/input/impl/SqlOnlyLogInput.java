@@ -24,19 +24,12 @@ public class SqlOnlyLogInput extends BaseFolderInput {
 
     protected void buildInput(String path) {
         log.info("path is {}", path);
-//        List<File> fileList = new ArrayList<File>();
         files = new File(path).listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
                 return name.contains("_sqlonly");
             }
         });
-//        if (ff != null) {
-//            for (File f : ff) {
-//                if (f.isDirectory()) {
-//                }
-//            }
-//        }
     }
 
     @Override

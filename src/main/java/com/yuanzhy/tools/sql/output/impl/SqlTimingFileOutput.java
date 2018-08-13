@@ -16,8 +16,8 @@ import java.util.List;
  */
 public class SqlTimingFileOutput extends BaseFileOutput implements IOutput {
     @Override
-    protected String getResultFilename(String suffix) {
-        return "/result/timeDesc_" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date()) + suffix + ".txt";
+    protected String getResultFilename() {
+        return "/result/timeDesc_" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date()) + ".txt";
     }
 
     @Override
