@@ -2,6 +2,8 @@ package com.yuanzhy.tools.sql.util;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.HashMap;
@@ -12,6 +14,8 @@ import java.util.Map;
  * @date 2018/8/11
  */
 public final class ArgumentUtil {
+
+    private static Logger log = LoggerFactory.getLogger(ArgumentUtil.class);
 
     private static Map<String, String> argsMap = new HashMap<String, String>();
 
@@ -49,7 +53,7 @@ public final class ArgumentUtil {
         if (param == null || param.startsWith("--")) {
             return jarPath;
         }
-        if (param.startsWith("/")) {
+        if (isAbsolutePath(param)) {
             return param;
         } else if (param.startsWith("./")) {
             return jarPath + param.substring(1);
@@ -63,5 +67,37 @@ public final class ArgumentUtil {
         } else {
             return jarPath + "/" + param;
         }
+    }
+
+    private static boolean isAbsolutePath(String path) {
+        if (path.startsWith("/")) {
+            return true;
+        }
+        if (isWindows()) {// windows
+            if (path.contains(":") || path.startsWith("\\")) {
+                return true;
+            }
+        } else {// not windows, just unix compatible
+            if (path.startsWith("~")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 是否windows系统
+     */
+    private static boolean isWindows() {
+        boolean isWindows = false;
+        try {
+            String osName = System.getProperty("os.name").toLowerCase();
+            String sharpOsName = osName.replaceAll("windows", "{windows}")
+                    .replaceAll("^win([^a-z])", "{windows}$1").replaceAll("([^a-z])win([^a-z])", "$1{windows}$2");
+            isWindows = sharpOsName.contains("{windows}");
+        } catch (Exception e) {
+            log.warn("获取操作系统类型出错", e);
+        }
+        return isWindows;
     }
 }
