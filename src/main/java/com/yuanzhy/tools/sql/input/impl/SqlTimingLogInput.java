@@ -17,10 +17,10 @@ import java.util.Iterator;
  * @author yuanzhy
  * @date 2018/6/13
  */
-public class JdbcLogInput extends BaseFolderInput implements IInput {
+public class SqlTimingLogInput extends BaseFolderInput implements IInput {
 
 
-    public JdbcLogInput(String path) {
+    public SqlTimingLogInput(String path) {
         super(path);
     }
 

@@ -8,7 +8,7 @@ import com.yuanzhy.tools.sql.model.SqlLog;
  * @Author yuanzhy
  * @Date 2018/8/8
  */
-public class EverySecondThreadStructureClassifier extends StructureClassifier {
+public class SameSecondThreadStructureClassifier extends StructureClassifier {
 
     @Override
     protected String getClassifyKey(SqlLog sqlLog) {
