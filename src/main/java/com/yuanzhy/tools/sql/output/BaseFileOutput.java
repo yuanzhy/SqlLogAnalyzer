@@ -1,8 +1,9 @@
 package com.yuanzhy.tools.sql.output;
 
-import com.yuanzhy.tools.sql.model.SqlLog;
+import com.yuanzhy.tools.sql.common.model.SqlLog;
 import com.yuanzhy.tools.sql.output.impl.TotalCountFileOutput;
-import com.yuanzhy.tools.sql.util.ConfigUtil;
+import com.yuanzhy.tools.sql.common.util.ArgumentUtil;
+import com.yuanzhy.tools.sql.common.util.ConfigUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -35,7 +36,59 @@ public abstract class BaseFileOutput implements IOutput {
 //            "sql file cost {logCost} msec\r\n" +
             "sql file count {totalCount}\r\n\r\n";
 
-    protected abstract void sort(List<SqlLog> sqlLogs);
+    @Override
+    public void doOutput(List<SqlLog> sqlLogs) {
+        this.sort(sqlLogs);
+        final List<SqlLog> outputList = this.getOutputList(sqlLogs);
+        final String resultPath = ArgumentUtil.getArgument("path").concat("/result");
+        log.info("============结果输出到文件");
+        String filename = this.getResultFilename();
+        int fileIndex = 1;
+        File file = new File(resultPath, filename);
+        if (file.exists()) {
+            file.delete();
+        }
+        BufferedWriter writer = null;
+        try {
+            file.createNewFile();
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8"));
+            int i = 1;
+            for (SqlLog sqlLog : outputList) {
+                // 只记录执行成功了sql
+                if (sqlLog.isSuccess()) {
+                    String logString = this.convert(sqlLog, i++);
+                    log.debug("prepare output sql: {}", logString);
+                    writer.write(logString);
+                    if (file.length() >= MAX_FILE_SIZE) {
+                        IOUtils.closeQuietly(writer);
+                        if (fileIndex == 1) { // 第一个文件重命名为(1)结尾的情况
+                            file.renameTo(new File(resultPath, filename.replace(".txt", "(1).txt")));
+                        }
+                        filename = filename.replace(".txt", "(" + ++fileIndex + ").txt");
+                        file = new File(resultPath, filename);
+                        if (file.exists()) {
+                            file.delete();
+                        }
+                        file.createNewFile();
+                        writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8"));
+                    }
+                }
+            }
+            // print log
+            log.info("============分析结果已输出到'{}'目录下", resultPath);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        } finally {
+            IOUtils.closeQuietly(writer);
+        }
+//        StringBuilder sb = new StringBuilder();
+
+//        try {
+//            FileUtils.writeStringToFile(new File(ConfigUtil.getJarPath().concat(filename)), sb.toString(), "UTF-8");
+//        } catch (IOException e) {
+//            log.error("结果输出到文件失败", e);
+//        }
+    }
 
     /**
      * sqlLog对象转换为字符串形式
@@ -64,66 +117,13 @@ public abstract class BaseFileOutput implements IOutput {
         }
     }
 
-    protected abstract String getResultFilename();
-
-    @Override
-    public void doOutput(List<SqlLog> sqlLogs) {
-        this.sort(sqlLogs);
-        List<SqlLog> outputList = this.getOutputList(sqlLogs);
-        log.info("============结果输出到文件");
-        String filename = this.getResultFilename();
-        int fileIndex = 1;
-        File file = new File(ConfigUtil.getJarPath().concat(filename));
-        if (file.exists()) {
-            file.delete();
-        }
-        BufferedWriter writer = null;
-        try {
-            file.createNewFile();
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8"));
-            int i = 1;
-            for (SqlLog sqlLog : outputList) {
-                // 只记录执行成功了sql
-                if (sqlLog.isSuccess()) {
-                    String logString = this.convert(sqlLog, i++);
-                    log.debug("prepare output sql: {}", logString);
-                    writer.write(logString);
-                    if (file.length() >= MAX_FILE_SIZE) {
-                        IOUtils.closeQuietly(writer);
-                        if (fileIndex == 1) { // 第一个文件重命名为(1)结尾的情况
-                            file.renameTo(new File(filename.replace(".txt", "(1).txt")));
-                        }
-                        filename = filename.replace(".txt", "(" + ++fileIndex + ").txt");
-                        file = new File(ConfigUtil.getJarPath().concat(filename));
-                        if (file.exists()) {
-                            file.delete();
-                        }
-                        file.createNewFile();
-                        writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8"));
-                    }
-                }
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        } finally {
-            IOUtils.closeQuietly(writer);
-        }
-//        StringBuilder sb = new StringBuilder();
-
-//        try {
-//            FileUtils.writeStringToFile(new File(ConfigUtil.getJarPath().concat(filename)), sb.toString(), "UTF-8");
-//        } catch (IOException e) {
-//            log.error("结果输出到文件失败", e);
-//        }
-    }
-
     /**
      * 获取需要输出的结果集
      *
      * @param sqlLogs sqlLogs
      * @return
      */
-    private List<SqlLog> getOutputList(List<SqlLog> sqlLogs) {
+    protected List<SqlLog> getOutputList(List<SqlLog> sqlLogs) {
         String topString = ConfigUtil.getProperty("tools.impl.output.top");
         int top;
         try {
@@ -139,4 +139,8 @@ public abstract class BaseFileOutput implements IOutput {
             return sqlLogs.subList(0, top);
         }
     }
+
+    protected abstract String getResultFilename();
+
+    protected abstract void sort(List<SqlLog> sqlLogs);
 }

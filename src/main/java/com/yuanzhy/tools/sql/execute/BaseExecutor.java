@@ -1,6 +1,6 @@
 package com.yuanzhy.tools.sql.execute;
 
-import com.yuanzhy.tools.sql.util.ConfigUtil;
+import com.yuanzhy.tools.sql.common.util.ConfigUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,8 +14,9 @@ import java.sql.SQLException;
  */
 public abstract class BaseExecutor implements IExecutor {
 
-    protected static Logger log = LoggerFactory.getLogger(BaseExecutor.class);
-    static {
+    protected Logger log = LoggerFactory.getLogger(this.getClass());
+
+    {
         try {
             Class.forName(ConfigUtil.getProperty("tools.sql.driverClass"));
         } catch (ClassNotFoundException e) {

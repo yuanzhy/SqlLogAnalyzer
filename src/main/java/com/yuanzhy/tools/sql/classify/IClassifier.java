@@ -1,7 +1,7 @@
 package com.yuanzhy.tools.sql.classify;
 
 import com.yuanzhy.tools.sql.input.IInput;
-import com.yuanzhy.tools.sql.model.SqlLog;
+import com.yuanzhy.tools.sql.common.model.SqlLog;
 
 import java.util.List;
 

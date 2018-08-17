@@ -1,4 +1,4 @@
-package com.yuanzhy.tools.sql.util;
+package com.yuanzhy.tools.sql.common.util;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -28,18 +28,18 @@ public final class ArgumentUtil {
     public static void parseArgs(String[] args) {
         if (ArrayUtils.isEmpty(args)) {
             argsMap.put("path", getPath(null));
-            return;
-        }
-        ArgumentUtil.args = args;
-        argsMap.put("path", args[0]); // 兼容之前的直接传递path
-        for (String arg : args) {
-            if (arg.startsWith("--") && arg.contains("=")) {
-                String key = arg.substring(2, arg.indexOf("="));
-                String value = arg.substring(arg.indexOf("=") + 1);
-                if ("path".equals(key)) {
-                    value = getPath(value);
+        } else {
+            ArgumentUtil.args = args;
+            argsMap.put("path", args[0]); // 兼容之前的直接传递path
+            for (String arg : args) {
+                if (arg.startsWith("--") && arg.contains("=")) {
+                    String key = arg.substring(2, arg.indexOf("="));
+                    String value = arg.substring(arg.indexOf("=") + 1);
+                    if ("path".equals(key)) {
+                        value = getPath(value);
+                    }
+                    argsMap.put(key, value);
                 }
-                argsMap.put(key, value);
             }
         }
     }

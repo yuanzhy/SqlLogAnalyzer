@@ -1,6 +1,6 @@
 package com.yuanzhy.tools.sql.classify.impl;
 
-import com.yuanzhy.tools.sql.model.SqlLog;
+import com.yuanzhy.tools.sql.common.model.SqlLog;
 
 /**
  * 每秒同一线程同类SQL  分组

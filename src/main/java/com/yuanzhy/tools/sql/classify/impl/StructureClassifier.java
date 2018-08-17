@@ -2,7 +2,7 @@ package com.yuanzhy.tools.sql.classify.impl;
 
 import com.yuanzhy.tools.sql.classify.BaseClassifier;
 import com.yuanzhy.tools.sql.classify.IClassifier;
-import com.yuanzhy.tools.sql.model.SqlLog;
+import com.yuanzhy.tools.sql.common.model.SqlLog;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.regex.Pattern;

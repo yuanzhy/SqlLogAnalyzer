@@ -1,6 +1,6 @@
 package com.yuanzhy.tools.sql.output.impl;
 
-import com.yuanzhy.tools.sql.model.SqlLog;
+import com.yuanzhy.tools.sql.common.model.SqlLog;
 import com.yuanzhy.tools.sql.output.BaseFileOutput;
 import com.yuanzhy.tools.sql.output.IOutput;
 
@@ -17,7 +17,7 @@ import java.util.List;
 public class SqlTimingFileOutput extends BaseFileOutput implements IOutput {
     @Override
     protected String getResultFilename() {
-        return "/result/timeDesc_" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date()) + ".txt";
+        return "timeDesc_" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date()) + ".txt";
     }
 
     @Override

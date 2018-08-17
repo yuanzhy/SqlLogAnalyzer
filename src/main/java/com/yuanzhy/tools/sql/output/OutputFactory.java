@@ -2,7 +2,7 @@ package com.yuanzhy.tools.sql.output;
 
 import com.yuanzhy.tools.sql.output.impl.MultiOutput;
 import com.yuanzhy.tools.sql.output.impl.TotalCountFileOutput;
-import com.yuanzhy.tools.sql.util.ConfigUtil;
+import com.yuanzhy.tools.sql.common.util.ConfigUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

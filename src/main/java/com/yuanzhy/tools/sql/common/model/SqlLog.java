@@ -1,13 +1,15 @@
-package com.yuanzhy.tools.sql.model;
+package com.yuanzhy.tools.sql.common.model;
 
-import com.yuanzhy.tools.sql.util.StorageUtil;
+import com.yuanzhy.tools.sql.common.util.StorageUtil;
 import org.apache.commons.lang.StringUtils;
+
+import java.io.Serializable;
 
 /**
  * @author yuanzhy
  * @date 2018/6/13
  */
-public class SqlLog {
+public class SqlLog implements Serializable {
     /**
      * 类名
      */

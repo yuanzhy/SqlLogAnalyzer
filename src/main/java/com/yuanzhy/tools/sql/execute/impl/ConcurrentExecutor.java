@@ -2,8 +2,8 @@ package com.yuanzhy.tools.sql.execute.impl;
 
 import com.yuanzhy.tools.sql.execute.BaseExecutor;
 import com.yuanzhy.tools.sql.execute.IExecutor;
-import com.yuanzhy.tools.sql.model.SqlLog;
-import com.yuanzhy.tools.sql.util.ConfigUtil;
+import com.yuanzhy.tools.sql.common.model.SqlLog;
+import com.yuanzhy.tools.sql.common.util.ConfigUtil;
 import org.apache.commons.lang.math.NumberUtils;
 
 import java.util.ArrayList;

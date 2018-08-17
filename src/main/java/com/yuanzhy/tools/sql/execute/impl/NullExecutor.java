@@ -2,7 +2,7 @@ package com.yuanzhy.tools.sql.execute.impl;
 
 import com.yuanzhy.tools.sql.execute.BaseExecutor;
 import com.yuanzhy.tools.sql.execute.IExecutor;
-import com.yuanzhy.tools.sql.model.SqlLog;
+import com.yuanzhy.tools.sql.common.model.SqlLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

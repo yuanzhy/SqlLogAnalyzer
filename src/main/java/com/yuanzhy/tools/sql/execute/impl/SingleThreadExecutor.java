@@ -2,7 +2,7 @@ package com.yuanzhy.tools.sql.execute.impl;
 
 import com.yuanzhy.tools.sql.execute.BaseExecutor;
 import com.yuanzhy.tools.sql.execute.IExecutor;
-import com.yuanzhy.tools.sql.model.SqlLog;
+import com.yuanzhy.tools.sql.common.model.SqlLog;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -27,6 +27,10 @@ public class SingleThreadExecutor extends BaseExecutor implements IExecutor {
             int errorCount = 0;
             for (int i=0; i < sqlLogs.size(); i++) {
                 SqlLog sqlLog = sqlLogs.get(i);
+                if (sqlLog.getCost() != 0) {
+                    // cost有值，可能是分析程序挂了，cost从之前的磁盘缓存中还原出来的，为节省分析时间，不需要再执行了
+                    continue;
+                }
                 long t1 = System.currentTimeMillis();
                 try {
                     stat.execute(sqlLog.getSql());

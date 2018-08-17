@@ -1,6 +1,7 @@
 package com.yuanzhy.tools.sql.input;
 
-import com.yuanzhy.tools.sql.model.SqlLog;
+import com.yuanzhy.tools.sql.common.model.SqlLog;
+import com.yuanzhy.tools.sql.common.util.MemoUtil;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ import java.util.NoSuchElementException;
 public abstract class BaseFolderInput implements IInput {
 
 
-    protected static Logger log = LoggerFactory.getLogger(BaseFolderInput.class);
+    protected Logger log = LoggerFactory.getLogger(this.getClass());
     protected String path;
 
     /**
@@ -32,9 +33,9 @@ public abstract class BaseFolderInput implements IInput {
     public BaseFolderInput(String path) {
         this.path = path;
     }
-
+    @Deprecated
     private static final EmptyIterator<Object> INSTANCE = new EmptyIterator<Object>();
-
+    @Deprecated
     protected <T> Iterator<T> emptyIterator() {
         return (Iterator<T>) INSTANCE;
     }
@@ -43,6 +44,7 @@ public abstract class BaseFolderInput implements IInput {
      *
      * @param <E>
      */
+    @Deprecated
     private static class EmptyIterator<E> implements Iterator<E> {
         public boolean hasNext() { return false; }
         public E next() { throw new NoSuchElementException(); }
@@ -53,19 +55,35 @@ public abstract class BaseFolderInput implements IInput {
 
         protected SqlLog nextLog;
 
-        protected int fileIndex = 1;
+        protected int fileIndex = -1;
 
         protected BufferedReader br;
 
         public BaseFolderIterator() {
-            newBufferedReader(0);
+            Integer memoFileIndex = MemoUtil.getMemo("fileIndex");
+            if (memoFileIndex != null) {
+                fileIndex = memoFileIndex.intValue() - 1;
+                // print log
+                if (log.isInfoEnabled() && fileIndex >= 0) {
+                    log.info("=======================================");
+                    for (int i=0; i <= fileIndex; i++) {
+                        log.info(files[i].getName());
+                    }
+                    log.info("=======================================");
+                    log.info("检测到之前已分析完以上文件，将继续分析剩余文件");
+                }
+            }
+            newBufferedReader();
         }
 
-        protected void newBufferedReader(int fileIndex) {
+        protected void newBufferedReader() {
             IOUtils.closeQuietly(br);
+            fileIndex++;
+            MemoUtil.saveMemo("fileIndex", fileIndex);
             if (files.length < fileIndex+1) {
                 br = null;
                 log.info("文件已全部读取完成");
+                MemoUtil.clearMemo();
                 return;
             }
             try {
@@ -76,6 +94,11 @@ public abstract class BaseFolderInput implements IInput {
                 IOUtils.closeQuietly(br);
                 br = null;
             }
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("不支持的操作");
         }
 
         /**

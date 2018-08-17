@@ -1,8 +1,8 @@
 package com.yuanzhy.tools.sql.input.impl;
 
 import com.yuanzhy.tools.sql.input.BaseFolderInput;
-import com.yuanzhy.tools.sql.model.SqlLog;
-import com.yuanzhy.tools.sql.util.SqlUtil;
+import com.yuanzhy.tools.sql.common.model.SqlLog;
+import com.yuanzhy.tools.sql.common.util.SqlUtil;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -63,7 +63,7 @@ public class LianggeResultInput extends BaseFolderInput {
                     String line = br.readLine();
                     if (line == null) {
                         // 当前文件已读完
-                        this.newBufferedReader(fileIndex++);
+                        this.newBufferedReader();
                         // 没有下一个文件了
                         if (br == null) {
                             return false;
@@ -106,9 +106,9 @@ public class LianggeResultInput extends BaseFolderInput {
                 }
                 return true;
             } catch (IOException e) {
-                log.error("读取日志失败：{}，切换下一个日志文件", files[fileIndex-1].getName(), e);
+                log.error("读取日志失败：{}，切换下一个日志文件", files[fileIndex].getName(), e);
                 // 出现异常，切换下一个文件吧
-                this.newBufferedReader(fileIndex++);
+                this.newBufferedReader();
                 if (br == null) {
                     // 所有文件已经读完
                     return false;
@@ -122,9 +122,5 @@ public class LianggeResultInput extends BaseFolderInput {
             return nextLog;
         }
 
-        @Override
-        public void remove() {
-            // ignore
-        }
     }
 }

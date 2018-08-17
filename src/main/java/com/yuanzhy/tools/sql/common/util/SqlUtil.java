@@ -1,4 +1,4 @@
-package com.yuanzhy.tools.sql.util;
+package com.yuanzhy.tools.sql.common.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,6 +1,6 @@
 package com.yuanzhy.tools.sql.output.impl;
 
-import com.yuanzhy.tools.sql.model.SqlLog;
+import com.yuanzhy.tools.sql.common.model.SqlLog;
 import com.yuanzhy.tools.sql.output.BaseFileOutput;
 import com.yuanzhy.tools.sql.output.IOutput;
 
@@ -18,7 +18,7 @@ public class TotalCountFileOutput extends BaseFileOutput implements IOutput {
 
     @Override
     protected String getResultFilename() {
-        return "/result/countDesc_" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date()) + ".txt";
+        return "countDesc_" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date()) + ".txt";
     }
 
     @Override

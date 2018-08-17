@@ -1,7 +1,7 @@
 package com.yuanzhy.tools.sql.execute;
 
 import com.yuanzhy.tools.sql.execute.impl.NullExecutor;
-import com.yuanzhy.tools.sql.util.ConfigUtil;
+import com.yuanzhy.tools.sql.common.util.ConfigUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

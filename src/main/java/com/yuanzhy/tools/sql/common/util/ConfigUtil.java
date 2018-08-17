@@ -1,4 +1,4 @@
-package com.yuanzhy.tools.sql.util;
+package com.yuanzhy.tools.sql.common.util;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;

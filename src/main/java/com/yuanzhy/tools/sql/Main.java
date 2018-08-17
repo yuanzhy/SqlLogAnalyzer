@@ -2,15 +2,15 @@ package com.yuanzhy.tools.sql;
 
 import com.yuanzhy.tools.sql.classify.ClassifierFactory;
 import com.yuanzhy.tools.sql.classify.IClassifier;
+import com.yuanzhy.tools.sql.common.model.SqlLog;
+import com.yuanzhy.tools.sql.common.util.ArgumentUtil;
+import com.yuanzhy.tools.sql.common.util.StorageUtil;
 import com.yuanzhy.tools.sql.execute.ExecutorFactory;
 import com.yuanzhy.tools.sql.execute.IExecutor;
 import com.yuanzhy.tools.sql.input.IInput;
 import com.yuanzhy.tools.sql.input.InputFactory;
-import com.yuanzhy.tools.sql.model.SqlLog;
 import com.yuanzhy.tools.sql.output.IOutput;
 import com.yuanzhy.tools.sql.output.OutputFactory;
-import com.yuanzhy.tools.sql.util.ArgumentUtil;
-import com.yuanzhy.tools.sql.util.StorageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,10 +32,9 @@ public class Main {
      * @param args ["logPath"]，相对于jar所在目录的路径, 也可传递绝对路径
      */
     public static void main(String[] args) {
-//        args = new String[]{"2018-06-07"}; // test
+        args = new String[]{"F:\\NP\\河南2018-8-6\\sym"}; // test
         ArgumentUtil.parseArgs(args);
         String path = ArgumentUtil.getArgument("path");
-//        JvmUtil.heapUsedHalf();
         // 读取数据源，抽象，持有文件流引用方式
         IInput input = InputFactory.newInstance(path);
         // SQL分组, 为提升处理性能，暂实现为分组后每组只取一条存储在内存中（否则全部存储太大，需要落地到文件了）

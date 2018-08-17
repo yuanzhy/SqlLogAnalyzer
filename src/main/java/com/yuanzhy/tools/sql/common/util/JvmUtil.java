@@ -1,4 +1,4 @@
-package com.yuanzhy.tools.sql.util;
+package com.yuanzhy.tools.sql.common.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

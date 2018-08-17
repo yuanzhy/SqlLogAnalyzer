@@ -1,16 +1,17 @@
 package com.yuanzhy.tools.sql.classify;
 
+import com.yuanzhy.tools.sql.common.model.SqlLog;
+import com.yuanzhy.tools.sql.common.util.ConfigUtil;
+import com.yuanzhy.tools.sql.common.util.JvmUtil;
+import com.yuanzhy.tools.sql.common.util.MemoUtil;
+import com.yuanzhy.tools.sql.common.util.SqlUtil;
 import com.yuanzhy.tools.sql.input.IInput;
-import com.yuanzhy.tools.sql.model.SqlLog;
-import com.yuanzhy.tools.sql.util.ConfigUtil;
-import com.yuanzhy.tools.sql.util.JvmUtil;
-import com.yuanzhy.tools.sql.util.SqlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,8 +27,11 @@ public abstract class BaseClassifier implements IClassifier {
 
     @Override
     public List<SqlLog> doClassify(IInput input) {
-        Map<String, SqlLog> tmpMap = new HashMap<String, SqlLog>();
-        List<SqlLog> result = new LinkedList<SqlLog>();
+        Map<String, SqlLog> tmpMap = MemoUtil.getMemo("tmpMap");
+        if (tmpMap == null) {
+            tmpMap = new HashMap<String, SqlLog>();
+            MemoUtil.saveMemo("tmpMap", tmpMap);
+        }
         Iterator<SqlLog> ite = input.iterator();
         while (ite.hasNext()) {
             SqlLog sqlLog = ite.next();
@@ -42,12 +46,12 @@ public abstract class BaseClassifier implements IClassifier {
                 continue;
             }
             tmpMap.put(classifyKey, sqlLog);
-            result.add(sqlLog);
             if (ENABLE_DISK_CACHE && JvmUtil.heapUsedHalf()) {
                 sqlLog.storeSql();
             }
         }
-        return result;
+        MemoUtil.clearMemo();
+        return new ArrayList(tmpMap.values());
     }
 
     protected abstract String getClassifyKey(SqlLog sqlLog);

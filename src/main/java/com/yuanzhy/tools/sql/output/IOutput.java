@@ -1,6 +1,6 @@
 package com.yuanzhy.tools.sql.output;
 
-import com.yuanzhy.tools.sql.model.SqlLog;
+import com.yuanzhy.tools.sql.common.model.SqlLog;
 
 import java.util.List;
 

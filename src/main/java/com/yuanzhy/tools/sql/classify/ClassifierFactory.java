@@ -1,7 +1,7 @@
 package com.yuanzhy.tools.sql.classify;
 
 import com.yuanzhy.tools.sql.classify.impl.StructureClassifier;
-import com.yuanzhy.tools.sql.util.ConfigUtil;
+import com.yuanzhy.tools.sql.common.util.ConfigUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
