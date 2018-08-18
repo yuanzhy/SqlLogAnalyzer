@@ -2,17 +2,19 @@ package com.yuanzhy.tools.sql.common.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.io.Writer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author yuanzhy
@@ -24,15 +26,16 @@ public final class StorageUtil {
 
     private static final String TEMP_PATH;
     /**
+     *
      * key=storageId
-     * value=line
+     * value=position  文本在文件中的position
      */
-    private static ConcurrentMap<String, Integer> storageLine = new ConcurrentHashMap<String, Integer>();
+    private static ConcurrentMap<String, Long> positionMap = new ConcurrentHashMap<String, Long>();
     /**
-     * key=filename
-     * value=maxLine
+     * key=storageId
+     * value=Writer 缓存writer，避免频繁创建文件流耗费时间
      */
-    private static ConcurrentMap<String, AtomicInteger> filenameMaxLine = new ConcurrentHashMap<String, AtomicInteger>();
+    private static ConcurrentMap<String, Writer> writerMap = new ConcurrentHashMap<String, Writer>();
 
     static {
         String path = ArgumentUtil.getArgument("path");
@@ -52,6 +55,9 @@ public final class StorageUtil {
             public void run() {
                 log.info("程序退出，清理临时文件");
                 try {
+                    for (Writer writer : writerMap.values()) {
+                        IOUtils.closeQuietly(writer);
+                    }
                     FileUtils.deleteQuietly(new File(TEMP_PATH));
                     log.info("清理临时文件成功");
                 } catch (Exception e) {
@@ -71,17 +77,24 @@ public final class StorageUtil {
             throw new IllegalArgumentException("不能包含换行符");
         }
         String storageId = DigestUtils.md5Hex(source);
-        if (storageLine.containsKey(storageId)) {
+        if (positionMap.containsKey(storageId)) {
             return storageId;
         }
         File file = getFile(storageId);
-        filenameMaxLine.putIfAbsent(file.getName(), new AtomicInteger(0));
-        AtomicInteger maxLine = filenameMaxLine.get(file.getName());
-        int currLine = maxLine.incrementAndGet();
-        storageLine.put(storageId, currLine);
-        synchronized (StorageUtil.class) {
+        synchronized (StorageUtil.class) { // 锁后续在优化，先实现功能
+            if (positionMap.containsKey(storageId)) {
+                return storageId;
+            }
+            positionMap.put(storageId, file.length());
             try {
-                FileUtils.writeStringToFile(file, source + "\r\n", true);
+                Writer writer = writerMap.get(storageId);
+                if (writer == null) {
+                    writer = new BufferedWriter(new FileWriter(file, true));
+                    writerMap.put(storageId, writer);
+                }
+                writer.write(source + "\r\n");
+                // 流不关闭，避免频繁创建耗费大量时间，会在程序退出的钩子里关闭
+//                FileUtils.writeStringToFile(file, source + "\r\n", true);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -96,13 +109,15 @@ public final class StorageUtil {
      */
     public static String get(String storageId) {
         File file = getFile(storageId);
-        int line = storageLine.get(storageId);
+        RandomAccessFile raf = null;
         try {
-            RandomAccessFile raf = new RandomAccessFile(file, "r");
-            // TODO
-            return null;
-        } catch (FileNotFoundException e) {
+            raf = new RandomAccessFile(file, "r");
+            raf.seek(positionMap.get(storageId));
+            return raf.readLine();
+        } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            IOUtils.closeQuietly(raf);
         }
     }
 

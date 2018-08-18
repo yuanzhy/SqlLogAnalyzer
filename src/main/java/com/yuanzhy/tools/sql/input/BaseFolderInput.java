@@ -60,19 +60,19 @@ public abstract class BaseFolderInput implements IInput {
         protected BufferedReader br;
 
         public BaseFolderIterator() {
-            Integer memoFileIndex = MemoUtil.getMemo("fileIndex");
-            if (memoFileIndex != null) {
-                fileIndex = memoFileIndex.intValue() - 1;
-                // print log
-                if (log.isInfoEnabled() && fileIndex >= 0) {
-                    log.info("=======================================");
-                    for (int i=0; i <= fileIndex; i++) {
-                        log.info(files[i].getName());
-                    }
-                    log.info("=======================================");
-                    log.info("检测到之前已分析完以上文件，将继续分析剩余文件");
-                }
-            }
+//            Integer memoFileIndex = MemoUtil.getMemo("fileIndex");
+//            if (memoFileIndex != null) {
+//                fileIndex = memoFileIndex.intValue() - 1;
+//                // print log
+//                if (log.isInfoEnabled() && fileIndex >= 0) {
+//                    log.info("=======================================");
+//                    for (int i=0; i <= fileIndex; i++) {
+//                        log.info(files[i].getName());
+//                    }
+//                    log.info("=======================================");
+//                    log.info("检测到之前已分析完以上文件，将继续分析剩余文件");
+//                }
+//            }
             newBufferedReader();
         }
 

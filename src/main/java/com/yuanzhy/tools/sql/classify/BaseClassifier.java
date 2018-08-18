@@ -3,7 +3,6 @@ package com.yuanzhy.tools.sql.classify;
 import com.yuanzhy.tools.sql.common.model.SqlLog;
 import com.yuanzhy.tools.sql.common.util.ConfigUtil;
 import com.yuanzhy.tools.sql.common.util.JvmUtil;
-import com.yuanzhy.tools.sql.common.util.MemoUtil;
 import com.yuanzhy.tools.sql.common.util.SqlUtil;
 import com.yuanzhy.tools.sql.input.IInput;
 import org.slf4j.Logger;
@@ -27,11 +26,12 @@ public abstract class BaseClassifier implements IClassifier {
 
     @Override
     public List<SqlLog> doClassify(IInput input) {
-        Map<String, SqlLog> tmpMap = MemoUtil.getMemo("tmpMap");
-        if (tmpMap == null) {
-            tmpMap = new HashMap<String, SqlLog>();
-            MemoUtil.saveMemo("tmpMap", tmpMap);
-        }
+//        Map<String, SqlLog> tmpMap = MemoUtil.getMemo("tmpMap");
+//        if (tmpMap == null) {
+//            tmpMap = new HashMap<String, SqlLog>();
+//            MemoUtil.saveMemo("tmpMap", tmpMap);
+//        }
+        Map<String, SqlLog> tmpMap = new HashMap<String, SqlLog>();
         Iterator<SqlLog> ite = input.iterator();
         while (ite.hasNext()) {
             SqlLog sqlLog = ite.next();
@@ -50,7 +50,7 @@ public abstract class BaseClassifier implements IClassifier {
                 sqlLog.storeSql();
             }
         }
-        MemoUtil.clearMemo();
+//        MemoUtil.clearMemo();
         return new ArrayList(tmpMap.values());
     }
 
