@@ -3,11 +3,16 @@ package com.yuanzhy.tools.sql.common.util;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.RandomAccessFile;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author yuanzhy
@@ -15,9 +20,19 @@ import java.util.Set;
  */
 public final class StorageUtil {
 
+    private static Logger log = LoggerFactory.getLogger(StorageUtil.class);
+
     private static final String TEMP_PATH;
-    /** 缓存已有文件名称，提升判断文件是否存在的性能 */
-    private static final Set<String> EXISTS_FILENAME = new HashSet<String>();
+    /**
+     * key=storageId
+     * value=line
+     */
+    private static ConcurrentMap<String, Integer> storageLine = new ConcurrentHashMap<String, Integer>();
+    /**
+     * key=filename
+     * value=maxLine
+     */
+    private static ConcurrentMap<String, AtomicInteger> filenameMaxLine = new ConcurrentHashMap<String, AtomicInteger>();
 
     static {
         String path = ArgumentUtil.getArgument("path");
@@ -31,50 +46,76 @@ public final class StorageUtil {
 //        String processId = runtimeMXBean.getName().split("@")[0];
 //        STORE_PATH = path + "result/temp/" + processId;
         TEMP_PATH = path + "result/temp/";
+        // 注册清理钩子
+        Runtime.getRuntime().addShutdownHook(new Thread(){
+            @Override
+            public void run() {
+                log.info("程序退出，清理临时文件");
+                try {
+                    FileUtils.deleteQuietly(new File(TEMP_PATH));
+                    log.info("清理临时文件成功");
+                } catch (Exception e) {
+                    log.error("清理临时文件失败,请手动删除：{}", TEMP_PATH, e);
+                }
+            }
+        });
     }
 
     /**
      *
      * @param source source
-     * @return filename
+     * @return storageId 存储标识
      */
     public static String store(String source) {
-        String filename = DigestUtils.md5Hex(source);
-        if (EXISTS_FILENAME.contains(filename)) {
-            return filename;
+        if (source.contains("\n")) {
+            throw new IllegalArgumentException("不能包含换行符");
         }
-        File file = new File(getSubFolder(filename), filename);
-        if (!file.exists()) {
+        String storageId = DigestUtils.md5Hex(source);
+        if (storageLine.containsKey(storageId)) {
+            return storageId;
+        }
+        File file = getFile(storageId);
+        filenameMaxLine.putIfAbsent(file.getName(), new AtomicInteger(0));
+        AtomicInteger maxLine = filenameMaxLine.get(file.getName());
+        int currLine = maxLine.incrementAndGet();
+        storageLine.put(storageId, currLine);
+        synchronized (StorageUtil.class) {
             try {
-                FileUtils.writeStringToFile(file, source, "UTF-8");
+                FileUtils.writeStringToFile(file, source + "\r\n", true);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        EXISTS_FILENAME.add(filename);
-        return filename;
+        return storageId;
     }
 
     /**
      *
-     * @param filename filename
+     * @param storageId 存储标识
      * @return
      */
-    public static String get(String filename) {
-        File file = new File(getSubFolder(filename), filename);
-        if (file.exists()) {
-            try {
-                return FileUtils.readFileToString(file, "UTF-8");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
+    public static String get(String storageId) {
+        File file = getFile(storageId);
+        int line = storageLine.get(storageId);
+        try {
+            RandomAccessFile raf = new RandomAccessFile(file, "r");
+            // TODO
             return null;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private static String getSubFolder(String filename) {
-        return TEMP_PATH + "/" + filename.substring(0, 2) + "/" + filename.substring(0, 5);
+    private static File getFile(String storageId) {
+        File file = new File(TEMP_PATH, storageId.substring(0, 2));
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException("创建缓存文件失败", e);
+            }
+        }
+        return file;
     }
 
     /**
@@ -97,7 +138,13 @@ public final class StorageUtil {
         new Thread() {
             @Override
             public void run() {
-                FileUtils.deleteQuietly(file);
+                log.info("开始异步清理临时缓存文件");
+                try {
+                    FileUtils.deleteQuietly(file);
+                    log.info("异步清理临时缓存文件成功");
+                } catch (Exception e) {
+                    log.error("异步清理临时缓存文件失败,请手动删除：{}", file.getAbsolutePath(), e);
+                }
             }
         }.start();
     }

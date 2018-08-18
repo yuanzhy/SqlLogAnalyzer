@@ -16,6 +16,10 @@ import java.util.concurrent.ConcurrentMap;
  * @Author yuanzhy
  * @Date 2018/8/14
  */
+/**
+ * 逻辑没问题，小碎文件多，性能太差
+ */
+@Deprecated
 public final class MemoUtil {
 
     private static Logger log = LoggerFactory.getLogger(MemoUtil.class);
@@ -92,43 +96,53 @@ public final class MemoUtil {
         if (tempPath == null) {
             throw new IllegalArgumentException("path不能为空，请先调用ArgumentUtil.parseArgs()解析参数");
         }
+        long start = System.currentTimeMillis();
         File memoFolder = new File(tempPath);
         map = new ConcurrentHashMap<String, Map<String, Object>>();
         if (memoFolder.exists()) {
             // 做还原操作
             log.info("检测到\"{}\"有未完成的分析任务，将继续执行此任务", ArgumentUtil.getArgument("path"));
-            for (File classFolder : memoFolder.listFiles()) {
-                Map<String, Object> classMap = new HashMap<String, Object>();
-                map.put(classFolder.getName(), classMap);
-                for (File userFile : classFolder.listFiles()) {
-                    if (userFile.isDirectory()) {
-                        if ("map".equals(SerializeUtil.getMark(userFile))) {
-                            Map<String, Object> map = new HashMap<String, Object>();
-                            classMap.put(userFile.getName(), map);
-                            for (File f : userFile.listFiles()) {
-                                map.put(CodecUtil.decode(f.getName()), SerializeUtil.readObject(f));
+            try {
+                for (File classFolder : memoFolder.listFiles()) {
+                    Map<String, Object> classMap = new HashMap<String, Object>();
+                    map.put(classFolder.getName(), classMap);
+                    for (File userFile : classFolder.listFiles()) {
+                        if (userFile.isDirectory()) {
+                            if ("map".equals(SerializeUtil.getMark(userFile))) {
+                                Map<String, Object> map = new HashMap<String, Object>();
+                                classMap.put(userFile.getName(), map);
+                                for (File f : userFile.listFiles()) {
+                                    map.put(CodecUtil.decode(f.getName()), SerializeUtil.readObject(f));
+                                }
+                            } else if ("list".equals(SerializeUtil.getMark(userFile))) {
+                                List<Object> list = new ArrayList<Object>();
+                                classMap.put(userFile.getName(), list);
+                                for (File f : userFile.listFiles()) {
+                                    list.add(SerializeUtil.readObject(f));
+                                }
+                            } else {
+                                log.warn("未知的文件类型，无法还原：{}", userFile.getAbsolutePath());
                             }
-                        } else if ("list".equals(SerializeUtil.getMark(userFile))) {
-                            List<Object> list = new ArrayList<Object>();
-                            classMap.put(userFile.getName(), list);
-                            for (File f : userFile.listFiles()) {
-                                list.add(SerializeUtil.readObject(f));
-                            }
-                        } else {
-                            log.warn("未知的文件类型，无法还原：{}", userFile.getAbsolutePath());
+                        } else if (userFile.length() > 0) {
+                            classMap.put(userFile.getName(), SerializeUtil.readObject(userFile));
                         }
-                    } else if (userFile.length() > 0) {
-                        classMap.put(userFile.getName(), SerializeUtil.readObject(userFile));
                     }
                 }
+                log.info("还原任务成功，耗时：{}秒", (System.currentTimeMillis() - start)/1000);
+            } catch (Exception e) {
+                log.error("还原任务失败", e);
+            } finally {
+                StorageUtil.asyncDeleteFile(memoFolder);
             }
-            log.info("还原任务成功");
-            StorageUtil.asyncDeleteFile(memoFolder);
         }
         // 注册备份钩子
-        Runtime.getRuntime().addShutdownHook(new ShutdownThread());
+//        Runtime.getRuntime().addShutdownHook(new ShutdownThread());
     }
 
+    /**
+     * 逻辑没问题，小碎文件多，性能太差
+     */
+    @Deprecated
     private static class ShutdownThread extends Thread {
         @Override
         public void run() {
@@ -136,6 +150,7 @@ public final class MemoUtil {
             if (map.isEmpty()) {
                 return;
             }
+            long start = System.currentTimeMillis();
             log.info("程序异常退出，正在缓存中间结果，请耐心等待...");
             final String tempPath = StorageUtil.getTempPath().concat("memo");
             try {
@@ -186,6 +201,7 @@ public final class MemoUtil {
                 log.error("缓存中间结果出错", e);
                 new File(StorageUtil.getTempPath().concat("memo")).deleteOnExit();
             }
+            log.info("缓存中间结果耗时：{}秒", (System.currentTimeMillis() - start)/1000);
         }
     }
 }

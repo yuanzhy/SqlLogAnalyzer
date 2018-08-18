@@ -53,7 +53,7 @@ public class SqlLog implements Serializable {
     /**
      * sql转储文件名
      */
-    private String sqlFilename;
+    private String storageId;
     /**
      * 获取 类名
      *
@@ -132,10 +132,10 @@ public class SqlLog implements Serializable {
      * @return sql 实际执行的sql
      */
     public String getSql() {
-        if (this.sqlFilename == null) {
+        if (this.storageId == null) {
             return this.sql;
         } else {
-            return StorageUtil.get(sqlFilename);
+            return StorageUtil.get(storageId);
         }
     }
 
@@ -145,7 +145,7 @@ public class SqlLog implements Serializable {
      * @param sql 实际执行的sql
      */
     public void setSql(String sql) {
-        if (this.sqlFilename == null) {
+        if (this.storageId == null) {
             this.sql = sql;
         } else {
             throw new RuntimeException("sql已缓存在磁盘中，不可以赋值");
@@ -247,7 +247,7 @@ public class SqlLog implements Serializable {
      *  执行和输出的时候在读出来
      */
     public void storeSql() {
-        this.sqlFilename = StorageUtil.store(this.sql);
+        this.storageId = StorageUtil.store(this.sql);
         this.sql = null;
     }
 }
