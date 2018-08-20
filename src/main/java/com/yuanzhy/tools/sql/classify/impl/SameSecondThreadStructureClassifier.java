@@ -1,5 +1,7 @@
 package com.yuanzhy.tools.sql.classify.impl;
 
+import com.yuanzhy.tools.sql.classify.IClassifier;
+import com.yuanzhy.tools.sql.common.intf.LargeMemory;
 import com.yuanzhy.tools.sql.common.model.SqlLog;
 
 /**
@@ -8,7 +10,7 @@ import com.yuanzhy.tools.sql.common.model.SqlLog;
  * @Author yuanzhy
  * @Date 2018/8/8
  */
-public class SameSecondThreadStructureClassifier extends StructureClassifier {
+public class SameSecondThreadStructureClassifier extends StructureClassifier implements IClassifier, LargeMemory {
 
     @Override
     protected String getClassifyKey(SqlLog sqlLog) {

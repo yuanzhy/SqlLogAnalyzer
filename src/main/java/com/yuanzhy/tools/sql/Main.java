@@ -32,7 +32,7 @@ public class Main {
      * @param args ["logPath"]，相对于jar所在目录的路径, 也可传递绝对路径
      */
     public static void main(String[] args) {
-        args = new String[]{"F:\\NP\\河南2018-8-6\\sym"}; // test
+//        args = new String[]{"F:\\NP\\河南2018-8-6\\sym"}; // test
         ArgumentUtil.parseArgs(args);
         String path = ArgumentUtil.getArgument("path");
         // 读取数据源，抽象，持有文件流引用方式
@@ -48,7 +48,5 @@ public class Main {
         // 按SQL执行时间倒叙排列下，出一个简易报告，输出到文件
         IOutput output = OutputFactory.newInstance();
         output.doOutput(sqlLogs);
-        log.info("============清理临时文件");
-        StorageUtil.clearTemp();
     }
 }

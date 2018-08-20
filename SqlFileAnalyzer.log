@@ -1,1 +1,138 @@
-2018-08-18 12:35:31 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-07-30(0).log
+2018-08-20 10:40:07 INFO  c.y.t.sql.common.util.ConfigUtil - SQLAnalyzer.jar同级目录下没有config.properties，默认读取jar包中的配置
+2018-08-20 10:40:07 INFO  com.yuanzhy.tools.sql.Main - ============开始分类
+2018-08-20 10:40:07 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - path is E:\yuanzhy\localRepository\SqlLogAnalyzer\target
+2018-08-20 10:40:07 ERROR c.y.t.s.input.impl.SqlOnlyLogInput - 没有找到sqlOnly日志文件
+2018-08-20 10:40:34 INFO  c.y.t.sql.common.util.ConfigUtil - SQLAnalyzer.jar同级目录下没有config.properties，默认读取jar包中的配置
+2018-08-20 10:40:34 INFO  com.yuanzhy.tools.sql.Main - ============开始分类
+2018-08-20 10:40:34 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - path is E:\yuanzhy\NP\sym
+2018-08-20 10:41:05 INFO  c.y.t.sql.common.util.ConfigUtil - SQLAnalyzer.jar同级目录下没有config.properties，默认读取jar包中的配置
+2018-08-20 10:41:05 INFO  com.yuanzhy.tools.sql.Main - ============开始分类
+2018-08-20 10:41:05 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - path is E:\yuanzhy\NP\sym
+2018-08-20 10:41:05 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-07-30(0).log
+2018-08-20 10:43:46 INFO  c.y.t.sql.common.util.ConfigUtil - SQLAnalyzer.jar同级目录下没有config.properties，默认读取jar包中的配置
+2018-08-20 10:43:46 INFO  com.yuanzhy.tools.sql.Main - ============开始分类
+2018-08-20 10:43:46 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - path is E:\yuanzhy\NP\sym
+2018-08-20 10:43:46 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-07-30(0).log
+2018-08-20 10:44:15 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-07-31(0).log
+2018-08-20 10:45:00 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-07-31(1).log
+2018-08-20 10:45:30 INFO  c.y.t.sql.common.util.ConfigUtil - SQLAnalyzer.jar同级目录下没有config.properties，默认读取jar包中的配置
+2018-08-20 10:45:30 INFO  com.yuanzhy.tools.sql.Main - ============开始分类
+2018-08-20 10:45:30 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - path is E:\yuanzhy\NP\sym
+2018-08-20 10:45:30 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-07-30(0).log
+2018-08-20 10:45:30 INFO  c.y.tools.sql.common.util.JvmUtil - jvm堆内存：444M
+2018-08-20 10:45:58 WARN  c.y.tools.sql.common.util.JvmUtil - jvm内存使用已超过一半
+2018-08-20 10:45:58 INFO  c.y.t.sql.common.util.StorageUtil - 程序退出，清理临时文件
+2018-08-20 10:45:58 INFO  c.y.t.sql.common.util.StorageUtil - 清理临时文件成功
+2018-08-20 10:48:31 INFO  c.y.t.sql.common.util.ConfigUtil - SQLAnalyzer.jar同级目录下没有config.properties，默认读取jar包中的配置
+2018-08-20 10:48:31 INFO  com.yuanzhy.tools.sql.Main - ============开始分类
+2018-08-20 10:48:31 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - path is E:\yuanzhy\NP\sym
+2018-08-20 10:48:31 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-07-30(0).log
+2018-08-20 10:48:48 INFO  c.y.t.sql.common.util.StorageUtil - 程序退出，清理临时文件
+2018-08-20 10:49:00 INFO  c.y.t.sql.common.util.StorageUtil - 清理临时文件成功
+2018-08-20 10:49:22 INFO  c.y.t.sql.common.util.ConfigUtil - SQLAnalyzer.jar同级目录下没有config.properties，默认读取jar包中的配置
+2018-08-20 10:49:22 INFO  com.yuanzhy.tools.sql.Main - ============开始分类
+2018-08-20 10:49:22 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - path is E:\yuanzhy\NP\sym
+2018-08-20 10:49:22 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-07-30(0).log
+2018-08-20 10:49:41 INFO  c.y.t.sql.common.util.StorageUtil - 程序退出，清理临时文件
+2018-08-20 10:50:49 INFO  c.y.t.sql.common.util.StorageUtil - 清理临时文件成功
+2018-08-20 10:52:07 INFO  c.y.t.sql.common.util.ConfigUtil - SQLAnalyzer.jar同级目录下没有config.properties，默认读取jar包中的配置
+2018-08-20 10:52:07 INFO  com.yuanzhy.tools.sql.Main - ============开始分类
+2018-08-20 10:52:07 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - path is E:\yuanzhy\NP\sym
+2018-08-20 10:52:07 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-07-30(0).log
+2018-08-20 10:52:34 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-07-31(0).log
+2018-08-20 10:53:12 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-07-31(1).log
+2018-08-20 10:53:41 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-01(0).log
+2018-08-20 10:54:17 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-01(1).log
+2018-08-20 10:54:34 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-02(0).log
+2018-08-20 10:55:08 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-02(1).log
+2018-08-20 10:55:25 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-03(0).log
+2018-08-20 10:56:00 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-03(1).log
+2018-08-20 10:56:24 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.log
+2018-08-20 10:56:32 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 文件已全部读取完成
+2018-08-20 10:56:32 INFO  com.yuanzhy.tools.sql.Main - ============执行分类SQL
+2018-08-20 10:56:32 INFO  c.y.tools.sql.execute.BaseExecutor - NullExecutor
+2018-08-20 10:56:32 INFO  c.y.t.s.o.impl.TotalCountFileOutput - ============日志同类sql总数倒叙排序
+2018-08-20 10:56:32 INFO  c.y.t.s.o.impl.TotalCountFileOutput - output top is 100
+2018-08-20 10:56:32 INFO  c.y.t.s.o.impl.TotalCountFileOutput - ============结果输出到文件
+2018-08-20 10:56:32 INFO  c.y.t.s.o.impl.TotalCountFileOutput - ============分析结果已输出到'E:\yuanzhy\NP\sym/result'目录下
+2018-08-20 10:56:32 INFO  com.yuanzhy.tools.sql.Main - ============清理临时文件
+2018-08-20 10:56:32 INFO  c.y.t.sql.common.util.StorageUtil - 程序退出，清理临时文件
+2018-08-20 10:56:43 INFO  c.y.t.sql.common.util.StorageUtil - 清理临时文件成功
+2018-08-20 11:38:28 INFO  c.y.t.sql.common.util.ConfigUtil - SQLAnalyzer.jar同级目录下没有config.properties，默认读取jar包中的配置
+2018-08-20 11:38:28 INFO  com.yuanzhy.tools.sql.Main - ============开始分类
+2018-08-20 11:38:28 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - path is E:\yuanzhy\NP\sym
+2018-08-20 11:38:28 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-07-30(0).log
+2018-08-20 11:38:56 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-07-31(0).log
+2018-08-20 11:39:36 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-07-31(1).log
+2018-08-20 11:40:04 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-01(0).log
+2018-08-20 11:40:41 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-01(1).log
+2018-08-20 11:40:56 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-02(0).log
+2018-08-20 11:41:30 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-02(1).log
+2018-08-20 11:41:48 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-03(0).log
+2018-08-20 11:42:24 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-03(1).log
+2018-08-20 11:42:43 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.log
+2018-08-20 11:42:49 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 文件已全部读取完成
+2018-08-20 11:42:49 INFO  com.yuanzhy.tools.sql.Main - ============执行分类SQL
+2018-08-20 11:42:49 INFO  c.y.tools.sql.execute.BaseExecutor - NullExecutor
+2018-08-20 11:42:49 INFO  c.y.t.s.o.impl.TotalCountFileOutput - ============日志同类sql总数倒叙排序
+2018-08-20 11:42:50 INFO  c.y.t.s.o.impl.TotalCountFileOutput - output top is 100
+2018-08-20 11:42:50 INFO  c.y.t.s.o.impl.TotalCountFileOutput - ============结果输出到文件
+2018-08-20 11:42:50 INFO  c.y.t.s.o.impl.TotalCountFileOutput - ============分析结果已输出到'E:\yuanzhy\NP\sym/result'目录下
+2018-08-20 11:42:50 INFO  c.y.t.sql.common.util.StorageUtil - 程序退出，清理临时文件
+2018-08-20 11:42:50 INFO  c.y.t.sql.common.util.StorageUtil - 清理临时文件成功
+2018-08-20 11:55:22 INFO  c.y.t.sql.common.util.ConfigUtil - SQLAnalyzer.jar同级目录下没有config.properties，默认读取jar包中的配置
+2018-08-20 11:55:22 INFO  com.yuanzhy.tools.sql.Main - ============开始分类
+2018-08-20 11:55:22 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - path is E:\yuanzhy\NP\sym
+2018-08-20 11:55:22 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-07-30(0).log
+2018-08-20 11:55:52 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-07-31(0).log
+2018-08-20 11:56:31 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-07-31(1).log
+2018-08-20 11:57:01 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-01(0).log
+2018-08-20 11:57:39 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-01(1).log
+2018-08-20 11:57:56 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-02(0).log
+2018-08-20 11:58:35 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-02(1).log
+2018-08-20 11:58:55 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-03(0).log
+2018-08-20 11:59:35 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-03(1).log
+2018-08-20 11:59:50 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.log
+2018-08-20 11:59:54 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 文件已全部读取完成
+2018-08-20 11:59:54 INFO  com.yuanzhy.tools.sql.Main - ============执行分类SQL
+2018-08-20 11:59:54 INFO  c.y.tools.sql.execute.BaseExecutor - NullExecutor
+2018-08-20 11:59:54 INFO  c.y.t.s.o.impl.TotalCountFileOutput - ============日志同类sql总数倒叙排序
+2018-08-20 11:59:54 INFO  c.y.t.s.o.impl.TotalCountFileOutput - output top is 100
+2018-08-20 11:59:54 INFO  c.y.t.s.o.impl.TotalCountFileOutput - ============结果输出到文件
+2018-08-20 11:59:54 INFO  c.y.t.s.o.impl.TotalCountFileOutput - ============分析结果已输出到'E:\yuanzhy\NP\sym/result'目录下
+2018-08-20 12:08:21 INFO  c.y.t.sql.common.util.ConfigUtil - SQLAnalyzer.jar同级目录下没有config.properties，默认读取jar包中的配置
+2018-08-20 12:08:21 INFO  com.yuanzhy.tools.sql.Main - ============开始分类
+2018-08-20 12:08:21 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - path is E:\yuanzhy\NP\sym
+2018-08-20 12:08:21 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-01(0).log
+2018-08-20 12:09:00 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-01(1).log
+2018-08-20 12:09:17 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-02(0).log
+2018-08-20 12:09:54 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-02(1).log
+2018-08-20 12:10:14 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-03(0).log
+2018-08-20 12:10:53 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-03(1).log
+2018-08-20 12:11:08 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.log
+2018-08-20 12:11:12 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 文件已全部读取完成
+2018-08-20 12:11:12 INFO  com.yuanzhy.tools.sql.Main - ============执行分类SQL
+2018-08-20 12:11:12 INFO  c.y.tools.sql.execute.BaseExecutor - NullExecutor
+2018-08-20 12:11:12 INFO  c.y.t.s.o.impl.TotalCountFileOutput - ============日志同类sql总数倒叙排序
+2018-08-20 12:11:12 INFO  c.y.t.s.o.impl.TotalCountFileOutput - output top is 100
+2018-08-20 12:11:12 INFO  c.y.t.s.o.impl.TotalCountFileOutput - ============结果输出到文件
+2018-08-20 12:11:12 INFO  c.y.t.s.o.impl.TotalCountFileOutput - ============分析结果已输出到'E:\yuanzhy\NP\sym/result'目录下
+2018-08-20 12:26:10 INFO  c.y.t.sql.common.util.ConfigUtil - SQLAnalyzer.jar同级目录下没有config.properties，默认读取jar包中的配置
+2018-08-20 12:26:10 INFO  com.yuanzhy.tools.sql.Main - ============开始分类
+2018-08-20 12:26:10 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - path is E:\yuanzhy\NP\sym
+2018-08-20 12:26:10 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-01(0).log
+2018-08-20 12:26:50 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-01(1).log
+2018-08-20 12:27:09 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-02(0).log
+2018-08-20 12:27:47 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-02(1).log
+2018-08-20 12:28:06 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-03(0).log
+2018-08-20 12:28:42 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.2018-08-03(1).log
+2018-08-20 12:28:56 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 开始读取文件: sym_sqlonlyfile_143.0.11.23_5080.log
+2018-08-20 12:28:59 INFO  c.y.t.s.input.impl.SqlOnlyLogInput - 文件已全部读取完成
+2018-08-20 12:28:59 INFO  com.yuanzhy.tools.sql.Main - ============执行分类SQL
+2018-08-20 12:28:59 INFO  c.y.tools.sql.execute.BaseExecutor - NullExecutor
+2018-08-20 12:28:59 INFO  c.y.t.s.o.impl.TotalCountFileOutput - ============日志同类sql总数倒叙排序
+2018-08-20 12:28:59 INFO  c.y.t.s.o.impl.TotalCountFileOutput - output top is 100
+2018-08-20 12:28:59 INFO  c.y.t.s.o.impl.TotalCountFileOutput - ============结果输出到文件
+2018-08-20 12:29:00 INFO  c.y.t.s.o.impl.TotalCountFileOutput - ============分析结果已输出到'E:\yuanzhy\NP\sym/result'目录下
+2018-08-20 12:29:00 INFO  c.y.t.sql.common.util.StorageUtil - 程序退出，清理临时文件
+2018-08-20 12:29:01 INFO  c.y.t.sql.common.util.StorageUtil - 清理临时文件成功

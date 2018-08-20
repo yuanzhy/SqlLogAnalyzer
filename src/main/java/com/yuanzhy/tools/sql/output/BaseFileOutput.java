@@ -13,6 +13,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,12 +44,17 @@ public abstract class BaseFileOutput implements IOutput {
         final List<SqlLog> outputList = this.getOutputList(sqlLogs);
         final String resultPath = ArgumentUtil.getArgument("path").concat("/result");
         log.info("============结果输出到文件");
-        String filename = this.getResultFilename();
-        int fileIndex = 1;
+        String filename = ArgumentUtil.getArgument("resultFilename");
+        if (StringUtils.isEmpty(filename)) {
+            filename = this.getResultFilename();
+        } else if (!filename.endsWith(".txt")) {
+            filename = filename + "_" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date()) + ".txt";
+        }
         File file = new File(resultPath, filename);
         if (file.exists()) {
             file.delete();
         }
+        int fileIndex = 1;
         BufferedWriter writer = null;
         try {
             file.createNewFile();

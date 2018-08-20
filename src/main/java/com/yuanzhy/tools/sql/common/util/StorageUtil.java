@@ -13,6 +13,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.Writer;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -32,7 +34,7 @@ public final class StorageUtil {
      */
     private static ConcurrentMap<String, Long> positionMap = new ConcurrentHashMap<String, Long>();
     /**
-     * key=storageId
+     * key=filename
      * value=Writer 缓存writer，避免频繁创建文件流耗费时间
      */
     private static ConcurrentMap<String, Writer> writerMap = new ConcurrentHashMap<String, Writer>();
@@ -45,10 +47,10 @@ public final class StorageUtil {
         if (!path.endsWith("/")) {
             path = path.concat("/");
         }
-//        RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
-//        String processId = runtimeMXBean.getName().split("@")[0];
-//        STORE_PATH = path + "result/temp/" + processId;
-        TEMP_PATH = path + "result/temp/";
+        RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
+        String processId = runtimeMXBean.getName().split("@")[0];
+        TEMP_PATH = path + "result/temp/" + processId;
+        new File(TEMP_PATH).mkdirs();
         // 注册清理钩子
         Runtime.getRuntime().addShutdownHook(new Thread(){
             @Override
@@ -87,12 +89,13 @@ public final class StorageUtil {
             }
             positionMap.put(storageId, file.length());
             try {
-                Writer writer = writerMap.get(storageId);
+                Writer writer = writerMap.get(file.getName());
                 if (writer == null) {
                     writer = new BufferedWriter(new FileWriter(file, true));
-                    writerMap.put(storageId, writer);
+                    writerMap.put(file.getName(), writer);
                 }
                 writer.write(source + "\r\n");
+                writer.flush();
                 // 流不关闭，避免频繁创建耗费大量时间，会在程序退出的钩子里关闭
 //                FileUtils.writeStringToFile(file, source + "\r\n", true);
             } catch (IOException e) {
@@ -122,7 +125,7 @@ public final class StorageUtil {
     }
 
     private static File getFile(String storageId) {
-        File file = new File(TEMP_PATH, storageId.substring(0, 2));
+        File file = new File(TEMP_PATH, storageId.substring(0, 1));
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -131,17 +134,6 @@ public final class StorageUtil {
             }
         }
         return file;
-    }
-
-    /**
-     *
-     */
-    public static void clearTemp() {
-        try {
-            FileUtils.deleteDirectory(new File(TEMP_PATH));
-        } catch (IOException e) {
-            throw new RuntimeException("删除临时目录失败", e);
-        }
     }
 
     public static String getTempPath() {

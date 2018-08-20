@@ -25,23 +25,38 @@ public final class ArgumentUtil {
         return argsMap.get(key);
     }
 
+    /**
+     * 用于判断boolean类型参数
+     * @param key key
+     * @return
+     */
+    public static boolean is(String key) {
+        return argsMap.containsKey(key);
+    }
+
     public static void parseArgs(String[] args) {
         if (ArrayUtils.isEmpty(args)) {
             argsMap.put("path", getPath(null));
-        } else {
-            ArgumentUtil.args = args;
-            argsMap.put("path", args[0]); // 兼容之前的直接传递path
-            for (String arg : args) {
-                if (arg.startsWith("--") && arg.contains("=")) {
+            return;
+        }
+        ArgumentUtil.args = args;
+        argsMap.put("path", getPath(args[0])); // 兼容之前的直接传递path
+        for (String arg : args) {
+            if (arg.startsWith("--")) {
+                if (arg.contains("=")) {
                     String key = arg.substring(2, arg.indexOf("="));
                     String value = arg.substring(arg.indexOf("=") + 1);
                     if ("path".equals(key)) {
                         value = getPath(value);
                     }
                     argsMap.put(key, value);
+                } else { // boolean 类型的参数 如 --console，使用命令行方式运行
+                    String key = arg.substring(2);
+                    argsMap.put(key, "true");
                 }
             }
         }
+
     }
 
     /**

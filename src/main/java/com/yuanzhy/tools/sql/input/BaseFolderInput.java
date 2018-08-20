@@ -79,11 +79,11 @@ public abstract class BaseFolderInput implements IInput {
         protected void newBufferedReader() {
             IOUtils.closeQuietly(br);
             fileIndex++;
-            MemoUtil.saveMemo("fileIndex", fileIndex);
+//            MemoUtil.saveMemo("fileIndex", fileIndex);
             if (files.length < fileIndex+1) {
                 br = null;
                 log.info("文件已全部读取完成");
-                MemoUtil.clearMemo();
+//                MemoUtil.clearMemo();
                 return;
             }
             try {

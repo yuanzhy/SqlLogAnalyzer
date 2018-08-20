@@ -31,7 +31,7 @@ public final class MemoUtil {
     private static ConcurrentMap<String, Map<String, Object>> map;
 
     static {
-        register();
+//        register();
     }
 
     public static <T> T getMemo(String key) {
