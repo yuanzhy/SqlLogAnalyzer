@@ -13,9 +13,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
- * @Author Administrator
+ * 序列化大量数据性能太差，弃用
+ * @Author yuanzhy
  * @Date 2018/8/17
  */
+@Deprecated
 public class SerializeUtil {
 
     public static void writeObject(File file, Object value) {

@@ -60,11 +60,6 @@ public class ConfigUtil {
     public static String getJarPath() {
         String path = ConfigUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         String result = new File(path).getParentFile().getAbsolutePath();
-        try {
-            return URLDecoder.decode(result, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            log.error(e.getMessage(), e);
-            return result;
-        }
+        return CodecUtil.decode(result);
     }
 }
