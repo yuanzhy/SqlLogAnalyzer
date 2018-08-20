@@ -145,11 +145,13 @@ public class SqlLog implements Serializable {
      * @param sql 实际执行的sql
      */
     public void setSql(String sql) {
-        if (this.storageId == null) {
-            this.sql = sql;
-        } else {
-            throw new RuntimeException("sql已缓存在磁盘中，不可以赋值");
-        }
+        this.sql = sql;
+        this.storageId = null;
+//        if (this.storageId == null) {
+//            this.sql = sql;
+//        } else {
+//            throw new RuntimeException("sql已缓存在磁盘中，不可以赋值");
+//        }
     }
 
     /**

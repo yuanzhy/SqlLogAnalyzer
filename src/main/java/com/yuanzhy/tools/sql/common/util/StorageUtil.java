@@ -3,6 +3,7 @@ package com.yuanzhy.tools.sql.common.util;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ public final class StorageUtil {
 
     private static Logger log = LoggerFactory.getLogger(StorageUtil.class);
 
-    private static final String TEMP_PATH;
+    private static final String STORAGE_PATH;
     /**
      *
      * key=storageId
@@ -40,7 +41,7 @@ public final class StorageUtil {
     private static ConcurrentMap<String, Writer> writerMap = new ConcurrentHashMap<String, Writer>();
 
     static {
-        String path = ArgumentUtil.getArgument("path");
+        String path = ArgumentUtil.getString("path");
         if (StringUtils.isEmpty(path)) {
             throw new IllegalArgumentException("path不能为空，请先调用ArgumentUtil.parseArgs()解析参数");
         }
@@ -49,8 +50,8 @@ public final class StorageUtil {
         }
         RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
         String processId = runtimeMXBean.getName().split("@")[0];
-        TEMP_PATH = path + "result/temp/" + processId;
-        new File(TEMP_PATH).mkdirs();
+        STORAGE_PATH = path + "result/temp/" + processId;
+        new File(STORAGE_PATH).mkdirs();
         // 注册清理钩子
         Runtime.getRuntime().addShutdownHook(new Thread(){
             @Override
@@ -60,10 +61,15 @@ public final class StorageUtil {
                     for (Writer writer : writerMap.values()) {
                         IOUtils.closeQuietly(writer);
                     }
-                    FileUtils.deleteQuietly(new File(TEMP_PATH));
+                    File storageFolder = new File(STORAGE_PATH);
+                    FileUtils.deleteDirectory(storageFolder);
+                    File tempFolder = storageFolder.getParentFile();
+                    if (ArrayUtils.isEmpty(tempFolder.listFiles())) { // 没有子文件了，可以删除掉
+                        FileUtils.deleteQuietly(tempFolder);
+                    }
                     log.info("清理临时文件成功");
                 } catch (Exception e) {
-                    log.error("清理临时文件失败,请手动删除：{}", TEMP_PATH, e);
+                    log.error("清理临时文件失败,请手动删除：{}", STORAGE_PATH, e);
                 }
             }
         });
@@ -97,7 +103,6 @@ public final class StorageUtil {
                 writer.write(source + "\r\n");
                 writer.flush();
                 // 流不关闭，避免频繁创建耗费大量时间，会在程序退出的钩子里关闭
-//                FileUtils.writeStringToFile(file, source + "\r\n", true);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -125,7 +130,7 @@ public final class StorageUtil {
     }
 
     private static File getFile(String storageId) {
-        File file = new File(TEMP_PATH, storageId.substring(0, 1));
+        File file = new File(STORAGE_PATH, storageId.substring(0, 1));
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -137,7 +142,7 @@ public final class StorageUtil {
     }
 
     public static String getTempPath() {
-        return TEMP_PATH;
+        return STORAGE_PATH;
     }
 
 

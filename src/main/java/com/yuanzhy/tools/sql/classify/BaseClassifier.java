@@ -26,11 +26,6 @@ public abstract class BaseClassifier implements IClassifier {
 
     @Override
     public List<SqlLog> doClassify(IInput input) {
-//        Map<String, SqlLog> tmpMap = MemoUtil.getMemo("tmpMap");
-//        if (tmpMap == null) {
-//            tmpMap = new HashMap<String, SqlLog>();
-//            MemoUtil.saveMemo("tmpMap", tmpMap);
-//        }
         Map<String, SqlLog> tmpMap = new HashMap<String, SqlLog>();
         Iterator<SqlLog> ite = input.iterator();
         while (ite.hasNext()) {
@@ -50,7 +45,6 @@ public abstract class BaseClassifier implements IClassifier {
                 sqlLog.storeSql();
             }
         }
-//        MemoUtil.clearMemo();
         return new ArrayList(tmpMap.values());
     }
 

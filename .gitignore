@@ -47,4 +47,4 @@ dist/
 nbdist/
 .nb-gradle/
 
-SqlFileAnalyzer.log
+*.log

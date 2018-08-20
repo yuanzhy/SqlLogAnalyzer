@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,12 +18,27 @@ public final class ArgumentUtil {
 
     private static Logger log = LoggerFactory.getLogger(ArgumentUtil.class);
 
-    private static Map<String, String> argsMap = new HashMap<String, String>();
+    private static Map<String, Object> argsMap = new HashMap<String, Object>();
 
     private static String[] args;
 
-    public static String getArgument(String key) {
-        return argsMap.get(key);
+    public static String getString(String key) {
+        Object value = argsMap.get(key);
+        return value == null ? null : value.toString();
+    }
+
+    public static Date getDate(String key) {
+        String dateStr = getString(key);
+        if (dateStr == null) {
+            return null;
+        }
+        String dateKey = key.concat("-date");
+        Date date = (Date)argsMap.get(dateKey);
+        if (date == null) {
+            date = DateUtil.parse(dateStr);
+            argsMap.put(dateKey, date); // 缓存起来，这样只解析一次
+        }
+        return date;
     }
 
     /**
@@ -30,7 +46,7 @@ public final class ArgumentUtil {
      * @param key key
      * @return
      */
-    public static boolean is(String key) {
+    public static boolean getBoolean(String key) {
         return argsMap.containsKey(key);
     }
 
@@ -52,11 +68,10 @@ public final class ArgumentUtil {
                     argsMap.put(key, value);
                 } else { // boolean 类型的参数 如 --console，使用命令行方式运行
                     String key = arg.substring(2);
-                    argsMap.put(key, "true");
+                    argsMap.put(key, true);
                 }
             }
         }
-
     }
 
     /**

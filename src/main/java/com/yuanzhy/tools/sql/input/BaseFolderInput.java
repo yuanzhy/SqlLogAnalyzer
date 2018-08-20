@@ -1,7 +1,8 @@
 package com.yuanzhy.tools.sql.input;
 
 import com.yuanzhy.tools.sql.common.model.SqlLog;
-import com.yuanzhy.tools.sql.common.util.MemoUtil;
+import com.yuanzhy.tools.sql.common.util.ArgumentUtil;
+import com.yuanzhy.tools.sql.common.util.DateUtil;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -33,57 +36,51 @@ public abstract class BaseFolderInput implements IInput {
     public BaseFolderInput(String path) {
         this.path = path;
     }
+
     @Deprecated
     private static final EmptyIterator<Object> INSTANCE = new EmptyIterator<Object>();
+
     @Deprecated
     protected <T> Iterator<T> emptyIterator() {
         return (Iterator<T>) INSTANCE;
     }
 
     /**
-     *
      * @param <E>
      */
     @Deprecated
     private static class EmptyIterator<E> implements Iterator<E> {
-        public boolean hasNext() { return false; }
-        public E next() { throw new NoSuchElementException(); }
-        public void remove() { throw new IllegalStateException(); }
+        public boolean hasNext() {
+            return false;
+        }
+
+        public E next() {
+            throw new NoSuchElementException();
+        }
+
+        public void remove() {
+            throw new IllegalStateException();
+        }
     }
 
     protected abstract class BaseFolderIterator implements Iterator<SqlLog> {
 
-        protected SqlLog nextLog;
+        private final SqlLog emptyLog = new SqlLog();
 
+        private SqlLog nextLog;
+        private BufferedReader br;
         protected int fileIndex = -1;
 
-        protected BufferedReader br;
-
         public BaseFolderIterator() {
-//            Integer memoFileIndex = MemoUtil.getMemo("fileIndex");
-//            if (memoFileIndex != null) {
-//                fileIndex = memoFileIndex.intValue() - 1;
-//                // print log
-//                if (log.isInfoEnabled() && fileIndex >= 0) {
-//                    log.info("=======================================");
-//                    for (int i=0; i <= fileIndex; i++) {
-//                        log.info(files[i].getName());
-//                    }
-//                    log.info("=======================================");
-//                    log.info("检测到之前已分析完以上文件，将继续分析剩余文件");
-//                }
-//            }
-            newBufferedReader();
+            nextFileReader();
         }
 
-        protected void newBufferedReader() {
+        protected void nextFileReader() {
             IOUtils.closeQuietly(br);
             fileIndex++;
-//            MemoUtil.saveMemo("fileIndex", fileIndex);
-            if (files.length < fileIndex+1) {
+            if (files.length < fileIndex + 1) {
                 br = null;
                 log.info("文件已全部读取完成");
-//                MemoUtil.clearMemo();
                 return;
             }
             try {
@@ -97,12 +94,107 @@ public abstract class BaseFolderInput implements IInput {
         }
 
         @Override
+        public boolean hasNext() {
+            try {
+                StringBuilder sb = new StringBuilder();
+                while (true) {
+                    String line = br.readLine();
+                    if (line == null) {
+                        // 当前文件已读完
+                        this.nextFileReader();
+                        // 没有下一个文件了
+                        if (br == null) {
+                            return false;
+                        } else {
+                            line = br.readLine();
+                        }
+                    }
+                    sb.append(line);
+                    if (this.isItemEnd(line)) {
+                        // 一条记录的结束
+                        break;
+                    } else if (this.isItemError(line)) {
+                        // 是出错日志，不做处理, 继续处理下一条记录
+                        return hasNext();
+                    }
+                }
+                if (sb.length() < 19) { // 小于时间的长度，记录肯定是无效的
+                    return hasNext();
+                }
+                // 判断时间区间是否符合要求
+                Date sqlDate = DateUtil.parse(sb.substring(0, 19));
+                Date startTime = ArgumentUtil.getDate("startTime");
+                Date endTime = ArgumentUtil.getDate("endTime");
+                if (DateUtil.datetimeInRange(sqlDate, startTime, endTime)) { // 日期时间都符合要求
+                    this.nextLog = this.parseLog(sb.toString());
+                    return true;
+                }
+                // 日期时间不符合要求的情况
+                if (DateUtil.dayInRangeBoundary(sqlDate, startTime, endTime)) {
+                    // 年月日卡在区间的边缘，说明本条记录不符合要求，但文件内可能会有满足要求的情况
+//                    log.debug("文件满足分析要求，但本条记录不符合: {}", sb.substring(0, 19));
+                    this.nextLog = emptyLog;// 创建一个无效记录，没使用hasNext递归是因为日志量大会导致StackOverflow
+                    return true;
+                }
+                // 日期时间不符合，年月日也不在边缘，此文件肯定没有符合的记录，直接切换文件
+                log.info("文件不符合时间要求，不做处理：{}", files[fileIndex].getName());
+                this.nextFileReader();
+                if (br == null) {
+                    // 所有文件已经读完
+                    return false;
+                }
+                return hasNext();
+            } catch (IOException e) {
+                log.error("读取日志失败：{}，切换下一个日志文件", files[fileIndex].getName(), e);
+                // 出现异常，切换下一个文件吧
+                this.nextFileReader();
+                if (br == null) {
+                    // 所有文件已经读完
+                    return false;
+                }
+                return hasNext();
+            }
+        }
+
+        /**
+         * 解析日志
+         *
+         * @param log 一条日志记录
+         * @return SqlLog对象
+         */
+        protected abstract SqlLog parseLog(String log);
+
+        /**
+         * 是否是一条记录的结尾
+         *
+         * @param line 日志中的一行字符串
+         * @return
+         */
+        protected abstract boolean isItemEnd(String line);
+
+        /**
+         * 是否是错误记录
+         *
+         * @param line 日志中的一行字符串
+         * @return
+         */
+        protected boolean isItemError(String line) {
+            return line.contains("[na:") || line.contains("Exception");
+        }
+
+        @Override
+        public SqlLog next() {
+            return nextLog;
+        }
+
+        @Override
         public void remove() {
             throw new UnsupportedOperationException("不支持的操作");
         }
 
         /**
          * finalize这个实现不太好，以防万一，兜底用一下吧
+         *
          * @throws Throwable
          */
         @Override

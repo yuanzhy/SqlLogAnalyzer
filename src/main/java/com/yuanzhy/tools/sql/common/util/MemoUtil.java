@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentMap;
  * @Date 2018/8/14
  */
 /**
- * 逻辑没问题，小碎文件多，性能太差
+ * 逻辑没问题，小碎文件多，性能太差 弃用
  */
 @Deprecated
 public final class MemoUtil {
@@ -57,7 +57,6 @@ public final class MemoUtil {
 
     private static String getCallClassName() {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-//        StackTraceElement log = stackTrace[1];
         for (int i = 2; i < stackTrace.length; i++) {
             StackTraceElement ele = stackTrace[i];
             if (!ele.getClassName().equals(MemoUtil.class.getName())) {
@@ -101,7 +100,7 @@ public final class MemoUtil {
         map = new ConcurrentHashMap<String, Map<String, Object>>();
         if (memoFolder.exists()) {
             // 做还原操作
-            log.info("检测到\"{}\"有未完成的分析任务，将继续执行此任务", ArgumentUtil.getArgument("path"));
+            log.info("检测到\"{}\"有未完成的分析任务，将继续执行此任务", ArgumentUtil.getString("path"));
             try {
                 for (File classFolder : memoFolder.listFiles()) {
                     Map<String, Object> classMap = new HashMap<String, Object>();
@@ -136,7 +135,7 @@ public final class MemoUtil {
             }
         }
         // 注册备份钩子
-//        Runtime.getRuntime().addShutdownHook(new ShutdownThread());
+        Runtime.getRuntime().addShutdownHook(new ShutdownThread());
     }
 
     /**

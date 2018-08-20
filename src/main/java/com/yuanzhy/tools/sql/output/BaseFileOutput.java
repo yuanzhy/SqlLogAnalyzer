@@ -42,9 +42,9 @@ public abstract class BaseFileOutput implements IOutput {
     public void doOutput(List<SqlLog> sqlLogs) {
         this.sort(sqlLogs);
         final List<SqlLog> outputList = this.getOutputList(sqlLogs);
-        final String resultPath = ArgumentUtil.getArgument("path").concat("/result");
+        final String resultPath = ArgumentUtil.getString("path").concat("/result");
         log.info("============结果输出到文件");
-        String filename = ArgumentUtil.getArgument("resultFilename");
+        String filename = ArgumentUtil.getString("resultFilename");
         if (StringUtils.isEmpty(filename)) {
             filename = this.getResultFilename();
         } else if (!filename.endsWith(".txt")) {

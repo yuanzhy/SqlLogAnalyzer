@@ -4,7 +4,6 @@ import com.yuanzhy.tools.sql.classify.ClassifierFactory;
 import com.yuanzhy.tools.sql.classify.IClassifier;
 import com.yuanzhy.tools.sql.common.model.SqlLog;
 import com.yuanzhy.tools.sql.common.util.ArgumentUtil;
-import com.yuanzhy.tools.sql.common.util.StorageUtil;
 import com.yuanzhy.tools.sql.execute.ExecutorFactory;
 import com.yuanzhy.tools.sql.execute.IExecutor;
 import com.yuanzhy.tools.sql.input.IInput;
@@ -34,7 +33,7 @@ public class Main {
     public static void main(String[] args) {
 //        args = new String[]{"F:\\NP\\河南2018-8-6\\sym"}; // test
         ArgumentUtil.parseArgs(args);
-        String path = ArgumentUtil.getArgument("path");
+        String path = ArgumentUtil.getString("path");
         // 读取数据源，抽象，持有文件流引用方式
         IInput input = InputFactory.newInstance(path);
         // SQL分组, 为提升处理性能，暂实现为分组后每组只取一条存储在内存中（否则全部存储太大，需要落地到文件了）

@@ -34,6 +34,11 @@
   -- 可传递绝对路径，相对路径（相对于SqlLogAnalyzer-xxx.jar的路径）
   2)resultFilename：分析结果的文件名称
   -- 不传递默认取output实现类定义的名称
-  3)console：为boolean参数，以命令行方式运行此程序
+  3)startTime：开始时间，分析此时间之后的日志（包含此时间）
+  -- 支持格式：yyyy-MM-dd HH:mm:ss, yyyy-MM-dd HH:mm, yyyy-MM-dd
+  -- 注意：此参数包含空格，传递时必须添加双引号
+  4)endTime：结束时间，分析此时间之前的日志（包含此时间）
+  -- 支持格式：yyyy-MM-dd HH:mm:ss, yyyy-MM-dd HH:mm, yyyy-MM-dd
+  -- 注意：此参数包含空格，传递时必须添加双引号
+  5)console：为boolean参数，以命令行方式运行此程序
   -- 不传递默认以图形界面方式启动(暂未实现)
-  4)

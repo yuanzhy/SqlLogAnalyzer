@@ -16,15 +16,21 @@ public class SqlUtil {
         return isDMLSql(str) || isSelectSql(str);
     }
 
-    public static boolean isSelectSql(String str) {
-        return str.startsWith("select") || str.startsWith("SELECT")
-                || str.startsWith("set rowcount") || str.startsWith("SET ROWCOUNT");
+    public static boolean isSelectSql(String sql) {
+        if (sql == null) {
+            return false;
+        }
+        return sql.startsWith("select") || sql.startsWith("SELECT")
+                || sql.startsWith("set rowcount") || sql.startsWith("SET ROWCOUNT");
     }
 
-    public static boolean isDMLSql(String str) {
-        return str.startsWith("insert") || str.startsWith("INSERT") ||
-                str.startsWith("update") || str.startsWith("UPDATE") ||
-                str.startsWith("delete") || str.startsWith("DELETE");
+    public static boolean isDMLSql(String sql) {
+        if (sql == null) {
+            return false;
+        }
+        return sql.startsWith("insert") || sql.startsWith("INSERT") ||
+                sql.startsWith("update") || sql.startsWith("UPDATE") ||
+                sql.startsWith("delete") || sql.startsWith("DELETE");
     }
 
     /**
