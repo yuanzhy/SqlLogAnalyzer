@@ -1,7 +1,6 @@
 package com.yuanzhy.tools.sql.common.util;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,8 +8,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.Properties;
 
 /**
@@ -47,14 +44,6 @@ public class ConfigUtil {
 
     public static String getProperty(String key) {
         return props.getProperty(key);
-    }
-
-    public static String getProperty(String key, String defaultValue) {
-        String value = props.getProperty(key);
-        if (StringUtils.isBlank(value)) {
-            return defaultValue;
-        }
-        return value;
     }
 
     public static String getJarPath() {

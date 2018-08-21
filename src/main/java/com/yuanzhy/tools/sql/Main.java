@@ -28,7 +28,7 @@ public class Main {
     /**
      * 日志路径不传默认为jar包所在路径
      *
-     * @param args ["logPath"]，相对于jar所在目录的路径, 也可传递绝对路径
+     * @param args ["--{name}={value}"] 例：--path=logs,相对于jar所在目录的路径, 也可传递绝对路径
      */
     public static void main(String[] args) {
 //        args = new String[]{"F:\\NP\\河南2018-8-6\\sym"}; // test
