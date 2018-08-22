@@ -13,6 +13,7 @@ import com.yuanzhy.tools.sql.output.OutputFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.management.ManagementFactory;
 import java.util.List;
 
 /**
@@ -32,6 +33,7 @@ public class Main {
      */
     public static void main(String[] args) {
 //        args = new String[]{"F:\\NP\\河南2018-8-6\\sym"}; // test
+        log.info("jvm堆内存：{}M", ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getMax()/1024/1024);
         ArgumentUtil.parseArgs(args);
         String path = ArgumentUtil.getString("path");
         // 读取数据源，抽象，持有文件流引用方式

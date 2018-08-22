@@ -40,7 +40,7 @@ public abstract class BaseClassifier implements IClassifier {
                 continue;
             }
             tmpMap.put(classifyKey, sqlLog);
-            if (ENABLE_DISK_CACHE/* && JvmUtil.heapUsedHalf()*/) {
+            if (ENABLE_DISK_CACHE) {
                 sqlLog.storeSql();
             }
         }
