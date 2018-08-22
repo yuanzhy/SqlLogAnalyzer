@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * @author yuanzhy
@@ -37,32 +36,6 @@ public abstract class BaseFolderInput implements IInput {
         this.path = path;
     }
 
-    @Deprecated
-    private static final EmptyIterator<Object> INSTANCE = new EmptyIterator<Object>();
-
-    @Deprecated
-    protected <T> Iterator<T> emptyIterator() {
-        return (Iterator<T>) INSTANCE;
-    }
-
-    /**
-     * @param <E>
-     */
-    @Deprecated
-    private static class EmptyIterator<E> implements Iterator<E> {
-        public boolean hasNext() {
-            return false;
-        }
-
-        public E next() {
-            throw new NoSuchElementException();
-        }
-
-        public void remove() {
-            throw new IllegalStateException();
-        }
-    }
-
     protected abstract class BaseFolderIterator implements Iterator<SqlLog> {
 
         private final SqlLog emptyLog = new SqlLog();
@@ -77,9 +50,9 @@ public abstract class BaseFolderInput implements IInput {
 
         protected void nextFileReader() {
             IOUtils.closeQuietly(br);
+            br = null;
             fileIndex++;
             if (files.length < fileIndex + 1) {
-                br = null;
                 log.info("文件已全部读取完成");
                 return;
             }
@@ -87,9 +60,8 @@ public abstract class BaseFolderInput implements IInput {
                 br = new BufferedReader(new InputStreamReader(new FileInputStream(files[fileIndex]), "GBK"));
                 log.info("开始读取文件: {}", files[fileIndex].getName());
             } catch (Exception e) {
-                log.error("创建bufferedReader失败", e);
                 IOUtils.closeQuietly(br);
-                br = null;
+                log.error("创建bufferedReader失败", e);
             }
         }
 
@@ -192,15 +164,5 @@ public abstract class BaseFolderInput implements IInput {
             throw new UnsupportedOperationException("不支持的操作");
         }
 
-        /**
-         * finalize这个实现不太好，以防万一，兜底用一下吧
-         *
-         * @throws Throwable
-         */
-        @Override
-        protected void finalize() throws Throwable {
-            IOUtils.closeQuietly(br);
-            super.finalize();
-        }
     }
 }
