@@ -2,7 +2,6 @@ package com.yuanzhy.tools.sql.classify;
 
 import com.yuanzhy.tools.sql.common.model.SqlLog;
 import com.yuanzhy.tools.sql.common.util.ConfigUtil;
-import com.yuanzhy.tools.sql.common.util.JvmUtil;
 import com.yuanzhy.tools.sql.common.util.SqlUtil;
 import com.yuanzhy.tools.sql.input.IInput;
 import org.slf4j.Logger;
@@ -45,8 +44,10 @@ public abstract class BaseClassifier implements IClassifier {
                 sqlLog.storeSql();
             }
         }
+        log.info("共\"{}\"类分析结果，分类器：{}", tmpMap.size(), this.getClass().getSimpleName());
         return new ArrayList(tmpMap.values());
     }
 
     protected abstract String getClassifyKey(SqlLog sqlLog);
+
 }

@@ -1,7 +1,6 @@
 package com.yuanzhy.tools.sql.output;
 
 import com.yuanzhy.tools.sql.common.model.SqlLog;
-import com.yuanzhy.tools.sql.output.impl.TotalCountFileOutput;
 import com.yuanzhy.tools.sql.common.util.ArgumentUtil;
 import com.yuanzhy.tools.sql.common.util.ConfigUtil;
 import org.apache.commons.io.IOUtils;
@@ -23,7 +22,7 @@ import java.util.List;
  */
 public abstract class BaseFileOutput implements IOutput {
 
-    protected static Logger log = LoggerFactory.getLogger(TotalCountFileOutput.class);
+    protected Logger log = LoggerFactory.getLogger(this.getClass());
     /** 单文件不可超过此大小 */
     protected static final long MAX_FILE_SIZE = 160 * 1024 * 1024;
 

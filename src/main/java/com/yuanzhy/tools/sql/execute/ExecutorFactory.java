@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ExecutorFactory {
 
-    protected static Logger log = LoggerFactory.getLogger(ExecutorFactory.class);
+    private static Logger log = LoggerFactory.getLogger(ExecutorFactory.class);
 
     public static IExecutor newInstance() {
         String className = ConfigUtil.getProperty("tools.impl.executor");

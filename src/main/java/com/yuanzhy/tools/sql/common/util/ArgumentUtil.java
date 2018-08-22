@@ -20,7 +20,7 @@ public final class ArgumentUtil {
 
     private static Map<String, Object> argsMap = new HashMap<String, Object>();
 
-    private static String[] args;
+//    private static String[] args;
 
     public static String getString(String key) {
         Object value = argsMap.get(key);
@@ -55,7 +55,7 @@ public final class ArgumentUtil {
             argsMap.put("path", getPath(null));
             return;
         }
-        ArgumentUtil.args = args;
+//        ArgumentUtil.args = args;
         argsMap.put("path", getPath(args[0])); // 兼容之前的直接传递path
         for (String arg : args) {
             if (arg.startsWith("--")) {

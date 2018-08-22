@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class NullExecutor implements IExecutor {
 
-    protected static Logger log = LoggerFactory.getLogger(BaseExecutor.class);
+    private static Logger log = LoggerFactory.getLogger(BaseExecutor.class);
 
     @Override
     public void doExecute(List<SqlLog> sqlLogs) {

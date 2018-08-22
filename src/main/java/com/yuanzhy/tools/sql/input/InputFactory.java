@@ -1,8 +1,6 @@
 package com.yuanzhy.tools.sql.input;
 
 import com.yuanzhy.tools.sql.common.util.ConfigUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author yuanzhy
@@ -10,7 +8,6 @@ import org.slf4j.LoggerFactory;
  */
 public class InputFactory {
 
-    private static Logger log = LoggerFactory.getLogger(InputFactory.class);
 
     public static IInput newInstance(String path) {
         String className = ConfigUtil.getProperty("tools.impl.input");
@@ -18,7 +15,7 @@ public class InputFactory {
             return (IInput) Class.forName(className).
                     getDeclaredConstructor(String.class).newInstance(path);
         } catch (Exception e) {
-            throw new RuntimeException("创建input对象失败", e);
+            throw new RuntimeException("创建input对象失败：" + className, e);
         }
     }
 }

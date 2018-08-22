@@ -1,18 +1,13 @@
 package com.yuanzhy.tools.sql.output;
 
-import com.yuanzhy.tools.sql.output.impl.MultiOutput;
-import com.yuanzhy.tools.sql.output.impl.TotalCountFileOutput;
 import com.yuanzhy.tools.sql.common.util.ConfigUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.yuanzhy.tools.sql.output.impl.MultiOutput;
 
 /**
  * @author yuanzhy
  * @date 2018/6/13
  */
 public class OutputFactory {
-
-    protected static Logger log = LoggerFactory.getLogger(OutputFactory.class);
 
     public static IOutput newInstance() {
         String className = ConfigUtil.getProperty("tools.impl.output");
@@ -26,8 +21,7 @@ public class OutputFactory {
             }
             return output;
         } catch (Exception e) {
-            log.error("创建output失败，使用TotalCountFileOutput");
-            return new TotalCountFileOutput();
+            throw new RuntimeException("创建output失败：" + className, e);
         }
     }
 }

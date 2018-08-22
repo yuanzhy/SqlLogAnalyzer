@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * @author yuanzhy
@@ -156,7 +157,15 @@ public abstract class BaseFolderInput implements IInput {
 
         @Override
         public SqlLog next() {
-            return nextLog;
+            if (files.length < fileIndex + 1) {
+                throw new NoSuchElementException();
+            }
+            if (this.nextLog == null) {
+                throw new IllegalStateException("请先调用hasNext");
+            }
+            SqlLog sqlLog = this.nextLog;
+            this.nextLog = null;
+            return sqlLog;
         }
 
         @Override

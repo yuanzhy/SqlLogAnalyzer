@@ -30,7 +30,7 @@ public class TotalCountFileOutput extends BaseFileOutput implements IOutput {
     /**
      * SQL执行时间倒叙排列比较器
      */
-    private class TotalCountComparator implements Comparator<SqlLog> {
+    private static class TotalCountComparator implements Comparator<SqlLog> {
 
         @Override
         public int compare(SqlLog o1, SqlLog o2) {
