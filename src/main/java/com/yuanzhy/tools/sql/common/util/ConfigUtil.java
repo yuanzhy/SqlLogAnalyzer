@@ -49,6 +49,6 @@ public class ConfigUtil {
     public static String getJarPath() {
         String path = ConfigUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         String result = new File(path).getParentFile().getAbsolutePath();
-        return CodecUtil.decode(result);
+        return CodecUtil.decode(result).replace("\\", "/");
     }
 }

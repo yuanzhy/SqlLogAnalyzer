@@ -23,12 +23,12 @@ public class TotalCountFileOutput extends BaseFileOutput implements IOutput {
 
     @Override
     protected void sort(List<SqlLog> sqlLogs) {
-        log.info("============日志同类sql总数倒叙排序");
+        log.info("============日志同类sql总数倒序排序");
         Collections.sort(sqlLogs, new TotalCountComparator());
     }
 
     /**
-     * SQL执行时间倒叙排列比较器
+     * SQL执行时间倒序排列比较器
      */
     private static class TotalCountComparator implements Comparator<SqlLog> {
 

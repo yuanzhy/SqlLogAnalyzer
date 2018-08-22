@@ -22,12 +22,12 @@ public class SqlTimingFileOutput extends BaseFileOutput implements IOutput {
 
     @Override
     protected void sort(List<SqlLog> sqlLogs) {
-        log.info("============执行时间倒叙排序");
+        log.info("============执行时间倒序排序");
         Collections.sort(sqlLogs, new SqlTimingComparator());
     }
 
     /**
-     * SQL执行时间倒叙排列比较器
+     * SQL执行时间倒序排列比较器
      */
     private static class SqlTimingComparator implements Comparator<SqlLog> {
 

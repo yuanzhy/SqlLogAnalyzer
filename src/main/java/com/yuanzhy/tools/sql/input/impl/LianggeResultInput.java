@@ -3,12 +3,10 @@ package com.yuanzhy.tools.sql.input.impl;
 import com.yuanzhy.tools.sql.common.model.SqlLog;
 import com.yuanzhy.tools.sql.common.util.SqlUtil;
 import com.yuanzhy.tools.sql.input.BaseFolderInput;
-import org.apache.commons.lang.ArrayUtils;
+import com.yuanzhy.tools.sql.input.IInput;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.util.Iterator;
 
 /**
@@ -18,34 +16,19 @@ import java.util.Iterator;
  * @Author yuanzhy
  * @Date 2018/8/8
  */
-public class LianggeResultInput extends BaseFolderInput {
+public class LianggeResultInput extends BaseFolderInput implements IInput {
 
     public LianggeResultInput(String path) {
         super(path);
     }
 
-    protected void buildInput(String path) {
-        log.info("path is {}", path);
-        files = new File(path).listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.contains("[") && name.endsWith(".txt");
-            }
-        });
-//        if (ff != null) {
-//            for (File f : ff) {
-//                if (f.isDirectory()) {
-//                }
-//            }
-//        }
+    @Override
+    protected boolean acceptFile(String filename) {
+        return filename.contains("[") && filename.endsWith(".txt");
     }
 
     @Override
-    public Iterator<SqlLog> iterator() {
-        this.buildInput(path);
-        if (ArrayUtils.isEmpty(files)) {
-            throw new NullPointerException("没有找到LianggeResult日志文件");
-        }
+    public Iterator<SqlLog> iterator0() {
         return new LianggeResultIterator();
     }
 

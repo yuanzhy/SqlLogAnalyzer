@@ -3,43 +3,32 @@ package com.yuanzhy.tools.sql.input.impl;
 import com.yuanzhy.tools.sql.common.model.SqlLog;
 import com.yuanzhy.tools.sql.common.util.SqlUtil;
 import com.yuanzhy.tools.sql.input.BaseFolderInput;
-import org.apache.commons.lang.ArrayUtils;
+import com.yuanzhy.tools.sql.input.IInput;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.util.Iterator;
 
 /**
  * @author yuanzhy
  * @date 2018/6/16
  */
-public class SqlOnlyLogInput extends BaseFolderInput {
+public class SqlOnlyLogInput extends BaseFolderInput implements IInput {
 
     public SqlOnlyLogInput(String path) {
         super(path);
     }
 
-    protected void buildInput(String path) {
-        log.info("path is {}", path);
-        files = new File(path).listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.contains("_sqlonly");
-            }
-        });
+    @Override
+    protected Iterator<SqlLog> iterator0() {
+        return new SqlOnlyLogIterator();
     }
 
     @Override
-    public Iterator<SqlLog> iterator() {
-        this.buildInput(path);
-        if (ArrayUtils.isEmpty(files)) {
-            log.error("没有找到sqlOnly日志文件");
-            throw new NullPointerException("没有找到sqlOnly日志文件");
-        }
-        return new SqlOnlyLogIterator();
+    protected boolean acceptFile(String filename) {
+        return filename.contains("_sqlonly");
     }
+
     /**
      * jdbcLog迭代器实现
      */

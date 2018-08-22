@@ -4,12 +4,14 @@ import com.yuanzhy.tools.sql.common.model.SqlLog;
 import com.yuanzhy.tools.sql.common.util.ArgumentUtil;
 import com.yuanzhy.tools.sql.common.util.DateUtil;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
@@ -24,8 +26,6 @@ public abstract class BaseFolderInput implements IInput {
 
 
     protected Logger log = LoggerFactory.getLogger(this.getClass());
-    protected String path;
-
     /**
      * 文件过大，所以采用流的方式一行行读取解析
      * hasNext会提前解析完一条日志记录，并缓存在nextLog
@@ -34,9 +34,36 @@ public abstract class BaseFolderInput implements IInput {
     protected File[] files;
 
     public BaseFolderInput(String path) {
-        this.path = path;
+        log.info("path is {}", path);
+        files = new File(path).listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return acceptFile(name);
+            }
+        });
     }
+    @Override
+    public final Iterator<SqlLog> iterator() {
+        if (ArrayUtils.isEmpty(files)) {
+            throw new NullPointerException("没有找到sqlOnly日志文件");
+        }
+        return this.iterator0();
+    }
+    /**
+     * 是否处理该文件
+     * @param filename filename
+     * @return
+     */
+    protected abstract boolean acceptFile(String filename);
+    /**
+     * 返回具体的迭代器实现
+     * @return
+     */
+    protected abstract Iterator<SqlLog> iterator0();
 
+    /**
+     *
+     */
     protected abstract class BaseFolderIterator implements Iterator<SqlLog> {
 
         private final SqlLog emptyLog = new SqlLog();
@@ -49,7 +76,7 @@ public abstract class BaseFolderInput implements IInput {
             nextFileReader();
         }
 
-        protected void nextFileReader() {
+        private void nextFileReader() {
             IOUtils.closeQuietly(br);
             br = null;
             fileIndex++;
@@ -67,7 +94,7 @@ public abstract class BaseFolderInput implements IInput {
         }
 
         @Override
-        public boolean hasNext() {
+        public final boolean hasNext() {
             try {
                 StringBuilder sb = new StringBuilder();
                 while (true) {
@@ -156,7 +183,7 @@ public abstract class BaseFolderInput implements IInput {
         }
 
         @Override
-        public SqlLog next() {
+        public final SqlLog next() {
             if (files.length < fileIndex + 1) {
                 throw new NoSuchElementException();
             }
@@ -169,7 +196,7 @@ public abstract class BaseFolderInput implements IInput {
         }
 
         @Override
-        public void remove() {
+        public final void remove() {
             throw new UnsupportedOperationException("不支持的操作");
         }
 

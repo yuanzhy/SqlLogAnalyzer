@@ -81,7 +81,7 @@ public abstract class BaseFileOutput implements IOutput {
                 }
             }
             // print log
-            log.info("============分析结果已输出到'{}'目录下", resultPath);
+            log.info("============分析结果已输出到'{}'：{}", resultPath, filename);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         } finally {

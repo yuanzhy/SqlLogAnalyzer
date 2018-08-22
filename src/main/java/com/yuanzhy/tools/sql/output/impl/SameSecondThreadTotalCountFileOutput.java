@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class SameSecondThreadTotalCountFileOutput extends TotalCountFileOutput implements IOutput {
 
-    protected static final String SST_TEMPLATE = "{order}.\r\n" +
+    protected static final String SST_TEMPLATE = "{order}. {costString}\r\n" +
             "{time} [{threadId}] {className}.{methodName}({classNameAfter}.java:{lineNumber})\r\n" +
             "{sql}\r\n" +
             "- same second thread sql count {totalCount}\r\n\r\n";
@@ -25,7 +25,9 @@ public class SameSecondThreadTotalCountFileOutput extends TotalCountFileOutput i
 
     @Override
     protected String convert(SqlLog sqlLog, int index) {
+        sqlLog.setCost(100);
         return SST_TEMPLATE.replace("{order}", String.valueOf(index))
+                .replace("{costString}", sqlLog.getCost() > 0 ? "cost " + sqlLog.getCost() + " msec" : "")
                 .replace("{time}", sqlLog.getTime())
                 .replace("{threadId}", sqlLog.getThreadId())
                 .replace("{className}", sqlLog.getClassName())

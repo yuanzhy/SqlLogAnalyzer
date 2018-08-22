@@ -46,7 +46,7 @@ public class Main {
         log.info("============执行分类SQL");
         IExecutor executor = ExecutorFactory.newInstance();
         executor.doExecute(sqlLogs);
-        // 按SQL执行时间倒叙排列下，出一个简易报告，输出到文件
+        // 按SQL执行时间倒序排列下，出一个简易报告，输出到文件
         IOutput output = OutputFactory.newInstance();
         output.doOutput(sqlLogs);
     }
