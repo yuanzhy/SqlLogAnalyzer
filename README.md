@@ -10,9 +10,9 @@ SQL日志分析工具，用于排查慢SQL、大量重复SQL等引起的性能�
 - 以上所有功能可配置
 
 ## 使用说明
-1. 分析过程：SQL分类 -> 分类后取一条执行并记录时间 -> 结果输出到日志目录中的result/下
+1. **分析过程**：SQL分类 -> 分类后取一条执行并记录时间 -> 结果输出到日志目录中的result/下
 
-2. 配置详解
+2. **配置详解**
 - 配置文件：config.properties，配置文件可以放在和jar平级的目录，优先级大于jar内部的config.properties
 - 输入配置tools.impl.input，可选值：
     - SqlOnlyLogInput：sqlOnly日志
@@ -33,10 +33,10 @@ SQL日志分析工具，用于排查慢SQL、大量重复SQL等引起的性能�
 - tools.impl.enableDiskCache启用磁盘缓存配置
     - 如使用SameSecondThreadStructureClassifier分类器且日志量较大建议开启，否则容易OOM
 
-3. 使用说明
+3. **使用说明**
 - 直接通过命令执行：java -jar SqlLogAnalyzer-xxx.jar --path=D:/logs --resultFilename=laxt --console
 
-4. 参数详解
+4. **参数详解**
    参数通过--{name}={value}传递，所有参数都可以不传
 - path：日志所在目录
     - 不传递默认为jar包所在目录
